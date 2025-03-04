@@ -1,0 +1,47 @@
+<h1>Orders</h1>
+
+<div class="card mt-4">
+    
+    <div class="card-body">
+      <ejs-grid #grid [dataSource]='data' 
+        allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
+        [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
+        [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
+        allowTextWrap='true'
+       >
+        <e-columns>
+            <e-column field='order_id' headerText='ID' textAlign='Right' width="70"></e-column>
+            <e-column field='market_order_number' headerText='Ref. No.' ></e-column>
+            <e-column field='item_title' headerText='Item' width="300">
+                <ng-template #template let-data>
+                    <a [routerLink]="['/orders', data.order_id]">{{data.item_title}}</a>
+                </ng-template>
+            </e-column>
+            <e-column field='sale_date' headerText='Sale Date' format="MM/dd/yyyy" ></e-column>
+            <e-column field='created_at' headerText='Created Date' format="MM/dd/yyyy HH:mm" ></e-column>
+            <e-column field='quantity' headerText='Quantity' textAlign='Right' ></e-column>
+            <e-column field='market_total_price' headerText='Total Price' textAlign='Right' ></e-column>
+            <e-column field='order_status' headerText='Status' [filter]="{operators: [{ value: 'equal', text: 'Equal' }]}">
+                <ng-template #template let-data>
+                    <span class="badge" [class]="'status-' + data.order_status">
+                        {{data.order_status}}
+                    </span>
+                </ng-template>
+                <ng-template #filterTemplate let-data>
+                    <select class="form-select">
+                        <option value="">All</option>
+                        <option value="pending">pending</option>
+                        <option value="purchased">purchased</option>
+                        <option value="shipped">shipped</option>
+                        <option value="delivered">delivered</option>
+                        <option value="error">error</option>
+                        <option value="removed">removed</option>
+                        <option value="cancelled">cancelled</option>
+                        <option value="refunded">refunded</option>
+                    </select>
+                </ng-template>
+            </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>

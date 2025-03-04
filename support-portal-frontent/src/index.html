@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>LumioSync - Your Auto Order Processor</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" href="./assets/media/logos/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700">
+  <!-- SPLASH SCREEN-->
+  <link rel="stylesheet" id="layout-styles-anchor" href="./assets/splash-screen.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <!-- Syncfusion styles -->
+  <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/bootstrap5.3.css?_gl=1*bnt725*_gcl_au*ODEyMDUxOTQ4LjE3MzQ3OTQ0MDI.*_ga*MTk5MDc4MjU0NS4xNzM0Nzk0Mjky*_ga_41J4HFMX1J*MTczNTAwNjUxOC4zLjEuMTczNTAxMTQwMC4wLjAuMA..">
+</head>
+
+<body root id="kt_body" class="mat-typography">
+  <!-- <body root id="kt_body" class="mat-typography" direction="rtl" dir="rtl" style="direction: rtl"></body> -->
+  <!--begin::Theme mode setup on page load-->
+  <script>
+    if (document.documentElement) {
+      var defaultThemeMode = "system";
+
+      var hasKTName = document.body.hasAttribute("data-kt-name");
+      var lsKey = "kt_" + (hasKTName ? name + "_" : "") + "theme_mode_value"
+      var themeMode = localStorage.getItem(lsKey);
+      if (!themeMode) {
+        if (defaultThemeMode === "system") {
+          themeMode =
+            window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        } else {
+          themeMode = defaultThemeMode;
+        }
+      }
+
+      document.documentElement.setAttribute("data-bs-theme", themeMode);
+    }
+  </script>
+  <!--end::Theme mode setup on page load-->
+  <div id="splash-screen" class="splash-screen">
+    <img src="./assets/media/logos/LumioSync-loading.gif" alt="LumioSync logo" />
+    <span>Loading ...</span>
+  </div>
+
+  <!-- Freshchat widget -->
+  <!-- <script>
+    window.fcSettings = {
+      onInit: function() {
+      var storage = window.localStorage.getItem("v8.2.4-authf649fc9a5f55");
+      if(storage) {
+        var authData = JSON.parse(storage);
+        window.fcWidget.setExternalId(authData.User.UserId);
+        window.fcWidget.user.setFirstName(authData.User.UserName);
+        window.fcWidget.user.setEmail(authData.User.UserName);
+        window.fcWidget.user.setProperties({
+        SellerId: authData.User.SellerId,
+        Site: authData.User.Site,
+        Role: authData.User.Role
+        });
+      }
+      }
+    }
+  </script> -->
+  <script
+  src='//uae.fw-cdn.com/40179687/110489.js'
+  chat='true'>
+  </script>
+  <!-- Freshchat widget end -->
+</body>
+
+</html>
