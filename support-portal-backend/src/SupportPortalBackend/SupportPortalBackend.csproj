@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,7 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lumio.SupportPortal.Services\Lumio.SupportPortal.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Lumio.Balance">
+      <HintPath>..\..\..\..\lumio-balance-system\src\Lumio.Balance\bin\Debug\net9.0\Lumio.Balance.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumio.DataAccess">
+      <HintPath>..\..\..\..\lumio-common\src\Lumio.DataAccess\bin\Debug\net9.0\Lumio.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumio.Domain">
+      <HintPath>..\..\..\..\lumio-common\src\Lumio.Domain\bin\Debug\net9.0\Lumio.Domain.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DBE0EC21-213
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupportPortalBackend", "src\SupportPortalBackend\SupportPortalBackend.csproj", "{11F0E40C-F3BA-4890-9C9B-EEA5A574AB6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lumio.SupportPortal.Services", "src\Lumio.SupportPortal.Services\Lumio.SupportPortal.Services.csproj", "{02C903AE-E42D-40F2-B65B-66F31BF0F440}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{11F0E40C-F3BA-4890-9C9B-EEA5A574AB6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11F0E40C-F3BA-4890-9C9B-EEA5A574AB6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11F0E40C-F3BA-4890-9C9B-EEA5A574AB6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C903AE-E42D-40F2-B65B-66F31BF0F440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C903AE-E42D-40F2-B65B-66F31BF0F440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C903AE-E42D-40F2-B65B-66F31BF0F440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C903AE-E42D-40F2-B65B-66F31BF0F440}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{11F0E40C-F3BA-4890-9C9B-EEA5A574AB6A} = {DBE0EC21-2133-4CD4-B7F5-E98BA09570C3}
+		{02C903AE-E42D-40F2-B65B-66F31BF0F440} = {DBE0EC21-2133-4CD4-B7F5-E98BA09570C3}
 	EndGlobalSection
 EndGlobal

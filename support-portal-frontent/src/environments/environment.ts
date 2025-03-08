@@ -7,7 +7,7 @@ export const environment = {
   appVersion: 'v8.2.4',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
-  backendUrl: 'https://localhost:7133',
+  backendUrl: 'https://localhost:7217',
   appThemeName: 'Metronic',
   
 };

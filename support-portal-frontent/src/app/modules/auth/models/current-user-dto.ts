@@ -1,7 +1,5 @@
 export interface CurrentUserDto {
-    UserId: number;
     UserName: string;
+    Email: string;
     Role: string;
-    SellerId: number;
-    Site: string;
 }
