@@ -14,8 +14,8 @@ namespace Lumio.SupportPortal.Services.Auth
         JwtConfiguration jwtConfiguration;
         private readonly MainDbContext mainDbContext;
 
-        const string TokenIssuer = "dropfreaks-customer-portal";
-        const string TokenAudience = "dropfreaks-customer-portal";
+        const string TokenIssuer = "lumio-support-portal";
+        const string TokenAudience = "lumio-support-portal";
 
         public CurrentUserDto CurrentUser { get; set; }
 

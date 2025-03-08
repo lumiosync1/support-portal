@@ -1,5 +1,6 @@
 export interface OrderDetailDto {
     OrderId: number;
+    SellerName: string;
     OrderNumber: string;
     SaleDate: string;
     CreatedDate: string;
@@ -30,9 +31,21 @@ export interface OrderDetailDto {
 export interface PurchaseDto {
     StartTime: string;
     EndTime: string;
+    SupplierAccountId: number;
+    SupplierAccount: string;
     SupplierOrderNumber: string;
-    SupplierTotalPrice: number;
     EstimatedArrivalTime: string;
+    SupplierSubTotal: number;
+    SupplierShippingFee: number;
+    SupplierDiscount: number;
+    SupplierTax: number;
+    SupplierTotalPrice: number;
+    MarketSaleFee: number;
+    MarketAdditionalFeePercentage: number;
+    MarketAdditionalFeeFixed: number;
+    OrderFee: number;
+    ProcessingFee: number;
+    Profit: number;
 }
 
 export interface TrackingDto {
@@ -46,6 +59,7 @@ export interface PurchaseAttemptDto {
     Id: number;
     StartTime: string;
     EndTime: string | null;
+    SupplierAccount: string;
     Status: string;
     Reason: string;
     Note: string;

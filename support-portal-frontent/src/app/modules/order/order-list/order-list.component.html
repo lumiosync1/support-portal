@@ -11,7 +11,7 @@
        >
         <e-columns>
             <e-column field='order_id' headerText='ID' textAlign='Right' width="70"></e-column>
-            <e-column field='market_order_number' headerText='Ref. No.' ></e-column>
+            <e-column field='created_by' headerText='Seller' ></e-column>
             <e-column field='item_title' headerText='Item' width="300">
                 <ng-template #template let-data>
                     <a [routerLink]="['/orders', data.order_id]">{{data.item_title}}</a>
