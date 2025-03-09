@@ -33,7 +33,7 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
         this.pageInfo.calculateBreadcrumbs();
 
         this.pageInfo.title.asObservable().subscribe((title) => {
-          this.titleService.setTitle(title + ' - LumioSync');
+          this.titleService.setTitle(title + ' - Support Portal');
           this.ref.detectChanges();
         });
       }, 10);

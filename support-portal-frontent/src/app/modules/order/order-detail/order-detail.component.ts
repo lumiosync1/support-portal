@@ -3,7 +3,7 @@ import { finalize, Subscription } from 'rxjs';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderService } from '../order.service';
 import { OrderDetailDto } from '../_models/OrderDetailDto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { ResponseStatus } from '../../shared/models/base-response.model';
@@ -14,7 +14,7 @@ import { CancelOrderModalComponent } from '../_components/cancel-order-modal/can
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [DatePipe, DecimalPipe, NgClass, NgbDropdownModule],
+  imports: [DatePipe, DecimalPipe, NgClass, NgbDropdownModule, RouterLink],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.scss'
 })

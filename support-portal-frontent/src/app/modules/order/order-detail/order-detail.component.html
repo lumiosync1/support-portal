@@ -1,7 +1,10 @@
 @if(orderDetail) {
 <div class="row">
-    <h1 class="col-10">Order #{{orderDetail.OrderId}}</h1>
-    <div class="col-2 text-end">
+    <h1 class="col-8">Order #{{orderDetail.OrderId}}</h1>
+    <div class="col-4 text-end">
+        <a class="btn btn-secondary me-2" [routerLink]="['/orders']">
+            <i class="bi bi-arrow-left "></i> Back
+        </a>
         <div ngbDropdown class="d-inline-block">
 			<button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
 				Action
