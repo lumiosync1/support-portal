@@ -10,19 +10,22 @@
 				Action
 			</button>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				<button ngbDropdownItem (click)="openCancelOrderModal()">
-                    <i class="bi bi-x-circle text-danger"></i> Cancel Order
-                </button>
+				@if(orderDetail.OrderStatus == OrderStatus.Purchased || orderDetail.OrderStatus == OrderStatus.Shipped) {
+                    <button ngbDropdownItem (click)="openCancelOrderModal()">
+                        <i class="bi bi-x-circle text-danger fs-3"></i> Cancel Order
+                    </button>
+                }
+                @if (orderDetail.OrderStatus == OrderStatus.Delivered) {
+                    <button ngbDropdownItem (click)="openReturnOrderModal()">
+                        <i class="bi bi-arrow-clockwise text-danger fs-3"></i> Return Order
+                    </button>
+                }
 			</div>
 		</div>
     </div>
 </div>
 <h2>{{orderDetail.ItemTitle}}</h2>
-<span class="badge fs-1" [ngClass]="
-    {'badge-primary': 'purchased,shipped'.includes(orderDetail.OrderStatus), 
-    'badge-success': orderDetail.OrderStatus == 'delivered', 
-    'badge-warning': 'pending,inprogress'.includes(orderDetail.OrderStatus),
-    'badge-danger': 'removed,cancelled,refunded'.includes(orderDetail.OrderStatus)}">
+<span class="badge fs-1" [ngClass]="'status-'+orderDetail.OrderStatus">
     {{orderDetail.OrderStatus}}
 </span>
 

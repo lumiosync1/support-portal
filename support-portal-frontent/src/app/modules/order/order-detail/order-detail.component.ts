@@ -10,6 +10,8 @@ import { ResponseStatus } from '../../shared/models/base-response.model';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
 import { PageInfoService } from 'src/app/_metronic/layout';
 import { CancelOrderModalComponent } from '../_components/cancel-order-modal/cancel-order-modal.component';
+import { ReturnOrderModalComponent } from '../_components/return-order-modal/return-order-modal.component';
+import { OrderStatus } from '../_others/order-statuses';
 
 @Component({
   selector: 'app-order-detail',
@@ -29,6 +31,7 @@ export class OrderDetailComponent {
   subscriptions: Subscription[] = [];
   orderId: number;
   orderDetail: OrderDetailDto;
+  OrderStatus = OrderStatus;
 
   ngOnInit(): void {
     const sub = this.route.params.subscribe(params => {
@@ -64,6 +67,20 @@ export class OrderDetailComponent {
 
   openCancelOrderModal() {
     const modalRef = this.modalService.open(CancelOrderModalComponent);
+    modalRef.componentInstance.orderId = this.orderId;
+    modalRef.result.then(
+      (result) => {
+        if(result) {
+          this.loadData();
+        }
+      },
+      (reason) => {
+      },
+    );
+  }
+
+  openReturnOrderModal() {
+    const modalRef = this.modalService.open(ReturnOrderModalComponent);
     modalRef.componentInstance.orderId = this.orderId;
     modalRef.result.then(
       (result) => {

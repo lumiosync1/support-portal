@@ -132,5 +132,41 @@ namespace Lumio.SupportPortal.Services.Order
                 await balanceManager.CreateTransactionAsync(transaction);
             }
         }
+
+        public async Task ReturnOrderAsync(int orderId, string reason, bool refundBalance)
+        {
+            var order = await dbContext.om_orders
+                .Where(o => o.order_id == orderId)
+                .Include(o => o.purchase)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+
+            if (order.order_status != OrderStatus.Delivered)
+            {
+                throw new Exception("Order can only be returned if it is delivered");
+            }
+
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Returned, reason, authService.CurrentUser.UserName);
+
+            if (refundBalance && order.purchase != null)
+            {
+                BalanceTransactionCreateDto transaction = new()
+                {
+                    seller_id = order.seller_id,
+                    order_id = order.order_id,
+                    amount = Math.Abs(order.purchase.supplier_total_price), // make sure the amount is positive
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PURCHASE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund for returned order"
+                };
+
+                await balanceManager.CreateTransactionAsync(transaction);
+            }
+        }
     }
 }

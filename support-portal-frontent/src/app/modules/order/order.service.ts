@@ -28,4 +28,12 @@ export class OrderService {
     form.append('refundBalance', refundBalance.toString());
     return this.http.post<BaseResponse<string>>(url, form);
   }
+
+  returnOrder(orderId: number, reason: string, refundBalance: boolean): Observable<BaseResponse<string>> {
+    let url: string = `${environment.backendUrl}/api/orders/${orderId}/return`;
+    const form: FormData = new FormData();
+    form.append('reason', reason);
+    form.append('refundBalance', refundBalance.toString());
+    return this.http.post<BaseResponse<string>>(url, form);
+  }
 }

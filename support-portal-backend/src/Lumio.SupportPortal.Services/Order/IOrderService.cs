@@ -11,5 +11,7 @@ namespace Lumio.SupportPortal.Services.Order
         public IQueryable<om_order> GetOrdersQueryable();
 
         public Task CancelOrderAsync(int orderId, string reason, bool refundBalance);
+
+        public Task ReturnOrderAsync(int orderId, string reason, bool refundBalance);
     }
 }
