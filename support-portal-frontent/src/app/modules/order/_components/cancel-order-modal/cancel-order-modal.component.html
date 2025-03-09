@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h4 class="modal-title" >Cancel Order #{{orderId}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtReason" class="form-label required">Reason</label>
+                <input type="text" id="txtReason" name="Reason" class="form-control"
+                    [class.is-valid]="formGroup.controls['Reason'].valid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)"
+                    [class.is-invalid]="formGroup.controls['Reason'].invalid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)"
+                    formControlName="Reason"/>
+                <div *ngIf="formGroup.controls['Reason'].hasError('required')" class="invalid-feedback">This field is required</div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="RefundBalance" value="" id="cbRefundBalance" />
+                    <label class="form-label" for="cbRefundBalance">
+                        Refund Balance
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+    <button class="btn btn-primary" [disabled]="!formGroup || !formGroup.valid" (click)="cancelOrder()">
+        <i class="bi bi-floppy fs-3"></i> Cancel Order
+    </button>
+</div>

@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderService } from '../order.service';
 import { OrderDetailDto } from '../_models/OrderDetailDto';
 import { ActivatedRoute } from '@angular/router';
@@ -8,11 +9,12 @@ import { ToastService } from '../../shared/services/toast.service';
 import { ResponseStatus } from '../../shared/models/base-response.model';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
 import { PageInfoService } from 'src/app/_metronic/layout';
+import { CancelOrderModalComponent } from '../_components/cancel-order-modal/cancel-order-modal.component';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [DatePipe, DecimalPipe, NgClass],
+  imports: [DatePipe, DecimalPipe, NgClass, NgbDropdownModule],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.scss'
 })
@@ -22,6 +24,7 @@ export class OrderDetailComponent {
   private spinner = inject(LoadingService);
   private toast = inject(ToastService);
   private page = inject(PageInfoService);
+  private modalService = inject(NgbModal)
 
   subscriptions: Subscription[] = [];
   orderId: number;
@@ -57,5 +60,19 @@ export class OrderDetailComponent {
     });
 
     this.subscriptions.push(sub);
+  }
+
+  openCancelOrderModal() {
+    const modalRef = this.modalService.open(CancelOrderModalComponent);
+    modalRef.componentInstance.orderId = this.orderId;
+    modalRef.result.then(
+      (result) => {
+        if(result) {
+          this.loadData();
+        }
+      },
+      (reason) => {
+      },
+    );
   }
 }

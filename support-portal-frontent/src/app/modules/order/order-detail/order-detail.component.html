@@ -1,5 +1,19 @@
 @if(orderDetail) {
-<h1>Order #{{orderDetail.OrderId}}</h1>
+<div class="row">
+    <h1 class="col-10">Order #{{orderDetail.OrderId}}</h1>
+    <div class="col-2 text-end">
+        <div ngbDropdown class="d-inline-block">
+			<button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
+				Action
+			</button>
+			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+				<button ngbDropdownItem (click)="openCancelOrderModal()">
+                    <i class="bi bi-x-circle text-danger"></i> Cancel Order
+                </button>
+			</div>
+		</div>
+    </div>
+</div>
 <h2>{{orderDetail.ItemTitle}}</h2>
 <span class="badge fs-1" [ngClass]="
     {'badge-primary': 'purchased,shipped'.includes(orderDetail.OrderStatus), 

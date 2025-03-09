@@ -2,6 +2,8 @@
 using Lumio.Balance;
 using Lumio.DataAccess;
 using Lumio.Domain.Entities;
+using Lumio.Domain.Utils;
+using Lumio.DomainServices;
 using Lumio.SupportPortal.Services.Auth;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
@@ -93,6 +95,8 @@ namespace SupportPortalBackend
             }
 
             services.AddScoped<BalanceManager>();
+
+            services.AddScoped<OrderManager>();
         }
 
         private static ODataConventionModelBuilder SetupOdata(IServiceCollection services, Assembly assembly)
