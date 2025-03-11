@@ -122,7 +122,7 @@ namespace Lumio.SupportPortal.Services.Order
                 {
                     seller_id = order.seller_id,
                     order_id = order.order_id,
-                    amount = Math.Abs(order.purchase.supplier_total_price), // make sure the amount is positive
+                    amount = Math.Abs(order.purchase.supplier_total_price - order.purchase.supplier_shipping_fee), // make sure the amount is positive
                     debit = false,
                     tx_code = BalanceTransactionCodes.PURCHASE,
                     created_by = authService.CurrentUser.UserName,
@@ -158,7 +158,7 @@ namespace Lumio.SupportPortal.Services.Order
                 {
                     seller_id = order.seller_id,
                     order_id = order.order_id,
-                    amount = Math.Abs(order.purchase.supplier_total_price), // make sure the amount is positive
+                    amount = Math.Abs(order.purchase.supplier_total_price - order.purchase.supplier_shipping_fee), // make sure the amount is positive
                     debit = false,
                     tx_code = BalanceTransactionCodes.PURCHASE,
                     created_by = authService.CurrentUser.UserName,
