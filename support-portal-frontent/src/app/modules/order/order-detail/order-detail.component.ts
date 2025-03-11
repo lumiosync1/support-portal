@@ -35,6 +35,7 @@ export class OrderDetailComponent {
   OrderStatus = OrderStatus;
 
   private removeConfirmDialog: any;
+  private pushToQueueConfirmDialog: any;
 
   ngOnInit(): void {
     const sub = this.route.params.subscribe(params => {
@@ -127,5 +128,36 @@ export class OrderDetailComponent {
       (reason) => {
       },
     );
+  }
+
+  confirmPushToQueue() {
+    this.pushToQueueConfirmDialog = DialogUtility.confirm({
+      title: 'Confirm',
+      content: `Are you sure you want to push order #${this.orderId} to queue?`,
+      okButton: {
+        text: 'Confirm',
+        click: this.pushOrderToQueue.bind(this)
+      }
+    });
+  }
+
+  pushOrderToQueue() {
+    this.pushToQueueConfirmDialog.hide();
+    this.spinner.showLoading();
+    const sub = this.orderService.pushOrderToQueue(this.orderId)
+    .pipe(
+      finalize(() => this.spinner.hideLoading())
+    )
+    .subscribe(response => {
+      if(response.Status !== ResponseStatus.Success) {
+        this.toast.showError(response.Message);
+        return;
+      }
+
+      this.toast.showInfo('Order pushed to queue successfully');
+      this.loadData();
+    });
+
+    this.subscriptions.push(sub);
   }
 }

@@ -25,7 +25,11 @@
                         <i class="bi bi-arrow-clockwise text-danger fs-3"></i> Return Order
                     </button>
                 }
-                
+                @if (orderDetail.OrderStatus == OrderStatus.Error || orderDetail.OrderStatus == OrderStatus.Removed) {
+                    <button ngbDropdownItem (click)="confirmPushToQueue()">
+                        <i class="bi bi-cart2 text-primary fs-3"></i> Push to Queue
+                    </button>
+                }
 			</div>
 		</div>
     </div>

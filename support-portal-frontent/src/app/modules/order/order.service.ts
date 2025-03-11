@@ -40,4 +40,8 @@ export class OrderService {
     form.append('refundBalance', refundBalance.toString());
     return this.http.post<BaseResponse<string>>(url, form);
   }
+
+  pushOrderToQueue(orderId: number): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/orders/${orderId}/queue`, {});
+  }
 }
