@@ -21,6 +21,10 @@ export class OrderService {
     return this.http.get<BaseResponse<OrderDetailDto>>(`${environment.backendUrl}/api/orders/${orderId}`);
   }
 
+  removeOrder(orderId: number): Observable<BaseResponse<string>> {
+    return this.http.delete<BaseResponse<string>>(`${environment.backendUrl}/api/orders/${orderId}`);
+  }
+
   cancelOrder(orderId: number, reason: string, refundBalance: boolean): Observable<BaseResponse<string>> {
     let url: string = `${environment.backendUrl}/api/orders/${orderId}/cancel`;
     const form: FormData = new FormData();

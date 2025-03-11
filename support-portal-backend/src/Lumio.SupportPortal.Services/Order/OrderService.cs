@@ -97,6 +97,26 @@ namespace Lumio.SupportPortal.Services.Order
             return dto;
         }
 
+        public async Task RemoveOrderAsync(int orderId)
+        {
+            var order = await dbContext.om_orders
+                .Where(o => o.order_id == orderId)
+                .Include(o => o.purchase)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+
+            if (order.order_status != OrderStatus.Pending && order.order_status != OrderStatus.Error)
+            {
+                throw new Exception("Order can only be removed if it is pending or error");
+            }
+
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Cancelled, "Remove", authService.CurrentUser.UserName);
+        }
+
         public async Task CancelOrderAsync(int orderId, string reason, bool refundBalance)
         {
             var order = await dbContext.om_orders

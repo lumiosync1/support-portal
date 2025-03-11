@@ -10,7 +10,12 @@
 				Action
 			</button>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				@if(orderDetail.OrderStatus == OrderStatus.Purchased || orderDetail.OrderStatus == OrderStatus.Shipped) {
+				@if (orderDetail.OrderStatus == OrderStatus.Pending || orderDetail.OrderStatus == OrderStatus.Error) {
+                    <button ngbDropdownItem (click)="confirmRemove()">
+                        <i class="bi bi-trash text-danger fs-3"></i> Remove Order
+                    </button>
+                }
+                @if(orderDetail.OrderStatus == OrderStatus.Purchased || orderDetail.OrderStatus == OrderStatus.Shipped) {
                     <button ngbDropdownItem (click)="openCancelOrderModal()">
                         <i class="bi bi-x-circle text-danger fs-3"></i> Cancel Order
                     </button>
@@ -20,6 +25,7 @@
                         <i class="bi bi-arrow-clockwise text-danger fs-3"></i> Return Order
                     </button>
                 }
+                
 			</div>
 		</div>
     </div>

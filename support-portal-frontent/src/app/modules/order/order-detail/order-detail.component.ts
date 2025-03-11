@@ -4,6 +4,7 @@ import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderService } from '../order.service';
 import { OrderDetailDto } from '../_models/OrderDetailDto';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DialogUtility} from '@syncfusion/ej2-angular-popups';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { ResponseStatus } from '../../shared/models/base-response.model';
@@ -33,6 +34,8 @@ export class OrderDetailComponent {
   orderDetail: OrderDetailDto;
   OrderStatus = OrderStatus;
 
+  private removeConfirmDialog: any;
+
   ngOnInit(): void {
     const sub = this.route.params.subscribe(params => {
       this.orderId = params['id'];
@@ -60,6 +63,39 @@ export class OrderDetailComponent {
       }
 
       this.orderDetail = response.Data;
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  confirmRemove() {
+    this.removeConfirmDialog = DialogUtility.confirm({
+      title: 'Confirm',
+      content: `Are you sure you want to remove order #${this.orderId}?
+      <br/>
+      (Order will only be marked as removed, not physically deleted from system)`,
+      okButton: {
+        text: 'Confirm',
+        click: this.removeOrder.bind(this)
+      }
+    });
+  }
+
+  removeOrder() {
+    this.removeConfirmDialog.hide();
+    this.spinner.showLoading();
+    const sub = this.orderService.removeOrder(this.orderId)
+    .pipe(
+      finalize(() => this.spinner.hideLoading())
+    )
+    .subscribe(response => {
+      if(response.Status !== ResponseStatus.Success) {
+        this.toast.showError(response.Message);
+        return;
+      }
+
+      this.toast.showInfo('Order removed successfully');
+      this.loadData();
     });
 
     this.subscriptions.push(sub);
