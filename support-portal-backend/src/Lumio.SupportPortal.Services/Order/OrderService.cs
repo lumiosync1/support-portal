@@ -6,6 +6,7 @@ using Lumio.DomainServices;
 using Lumio.Domain.Order;
 using Lumio.Balance;
 using Lumio.Domain;
+using System.Text.Json.Nodes;
 
 namespace Lumio.SupportPortal.Services.Order
 {
@@ -114,7 +115,7 @@ namespace Lumio.SupportPortal.Services.Order
                 throw new Exception("Order can only be removed if it is pending or error");
             }
 
-            await orderManager.UpdateStatusAsync(order, OrderStatus.Removed, "Remove", authService.CurrentUser.UserName);
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Removed, "Remove by CS", authService.CurrentUser.UserName);
         }
 
         public async Task CancelOrderAsync(int orderId, string reason, bool refundBalance)
@@ -189,10 +190,10 @@ namespace Lumio.SupportPortal.Services.Order
             }
         }
 
-        public async Task PushOrderToQueueAsync(int orderId)
+        public async Task PushOrderToQueueAsync(PushOrderToQueueDto dto)
         {
             var order = await dbContext.om_orders
-                .Where(o => o.order_id == orderId)
+                .Where(o => o.order_id == dto.OrderId)
                 .FirstOrDefaultAsync();
 
             if (order == null)
@@ -205,7 +206,22 @@ namespace Lumio.SupportPortal.Services.Order
                 throw new Exception("Order can only be pushed to queue if it is error or removed");
             }
 
-            await orderManager.UpdateStatusAsync(order, OrderStatus.Pending, "Push to queue", authService.CurrentUser.UserName);
+            string settings = string.IsNullOrEmpty(order.settings) ? "{}" : order.settings;
+            JsonObject jsettings = JsonNode.Parse(settings).AsObject();
+            if (dto.MinimalProfitFixed.HasValue)
+            {
+                jsettings["MinimalProfitFixed"] = dto.MinimalProfitFixed.Value;
+            }
+            if (dto.MaxShippingDays.HasValue)
+            {
+                jsettings["MaxShippingDays"] = dto.MaxShippingDays.Value;
+            }
+            if (dto.MinimalProfitFixed.HasValue || dto.MaxShippingDays.HasValue)
+            {
+                order.settings = jsettings.ToJsonString();
+            }
+
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Pending, "Push to queue by CS", authService.CurrentUser.UserName);
         }
     }
 }

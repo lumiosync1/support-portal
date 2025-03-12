@@ -13,6 +13,7 @@ import { PageInfoService } from 'src/app/_metronic/layout';
 import { CancelOrderModalComponent } from '../_components/cancel-order-modal/cancel-order-modal.component';
 import { ReturnOrderModalComponent } from '../_components/return-order-modal/return-order-modal.component';
 import { OrderStatus } from '../_others/order-statuses';
+import { PushOrderToQueueModalComponent } from '../_components/push-order-to-queue-modal/push-order-to-queue-modal.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -95,7 +96,7 @@ export class OrderDetailComponent {
         return;
       }
 
-      this.toast.showInfo('Order removed successfully');
+      this.toast.showSuccess('Order removed successfully');
       this.loadData();
     });
 
@@ -130,34 +131,16 @@ export class OrderDetailComponent {
     );
   }
 
-  confirmPushToQueue() {
-    this.pushToQueueConfirmDialog = DialogUtility.confirm({
-      title: 'Confirm',
-      content: `Are you sure you want to push order #${this.orderId} to queue?`,
-      okButton: {
-        text: 'Confirm',
-        click: this.pushOrderToQueue.bind(this)
-      }
-    });
-  }
-
-  pushOrderToQueue() {
-    this.pushToQueueConfirmDialog.hide();
-    this.spinner.showLoading();
-    const sub = this.orderService.pushOrderToQueue(this.orderId)
-    .pipe(
-      finalize(() => this.spinner.hideLoading())
-    )
-    .subscribe(response => {
-      if(response.Status !== ResponseStatus.Success) {
-        this.toast.showError(response.Message);
-        return;
-      }
-
-      this.toast.showInfo('Order pushed to queue successfully');
-      this.loadData();
-    });
-
-    this.subscriptions.push(sub);
+  openPushToQueueModal() {
+    const modalRef = this.modalService.open(PushOrderToQueueModalComponent, { backdrop: true });
+    modalRef.componentInstance.orderId = this.orderId;
+    modalRef.result.then(
+      (result: boolean) => {
+        if(result) {
+          this.loadData();
+        }
+      },
+      () => {}
+    );
   }
 }

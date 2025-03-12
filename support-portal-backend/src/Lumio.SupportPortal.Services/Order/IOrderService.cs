@@ -16,6 +16,6 @@ namespace Lumio.SupportPortal.Services.Order
 
         public Task ReturnOrderAsync(int orderId, string reason, bool refundBalance);
 
-        public Task PushOrderToQueueAsync(int orderId);
+        public Task PushOrderToQueueAsync(PushOrderToQueueDto dto);
     }
 }

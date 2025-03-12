@@ -3,7 +3,7 @@
 <div class="card mt-4">
     
     <div class="card-body">
-      <ejs-grid #grid [dataSource]='data' 
+      <ejs-grid #grid id="order-list" [dataSource]='data' 
         allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
         [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
         [allowFiltering]='true' [filterSettings]='{type: "Menu"}'

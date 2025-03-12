@@ -105,14 +105,14 @@ namespace Lumio.SupportPortal.Api.Controllers
             }
         }
 
-        [Route("{orderId}/queue")]
+        [Route("queue")]
         [HttpPost]
-        public async Task<BaseResponse<string>> PushOrderToQueueAsync(int orderId)
+        public async Task<BaseResponse<string>> PushOrderToQueueAsync(PushOrderToQueueDto dto)
         {
             BaseResponse<string> response = new BaseResponse<string>();
             try
             {
-                await orderService.PushOrderToQueueAsync(orderId);
+                await orderService.PushOrderToQueueAsync(dto);
                 response.Data = "Success";
                 response.Status = ResponseStatus.Success;
                 return response;
