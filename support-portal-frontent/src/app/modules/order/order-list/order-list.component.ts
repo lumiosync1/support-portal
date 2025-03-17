@@ -14,7 +14,6 @@ import { NgClass } from '@angular/common';
   imports: [
     GridModule,
     RouterLink,
-    NgClass,
   ],
   providers: [SortService, FilterService, PageService],
   templateUrl: './order-list.component.html',

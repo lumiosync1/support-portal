@@ -39,6 +39,23 @@ const Routing: Routes = [
       import('../modules/balance/balance-transaction-list/balance-transaction-list.component').then((m) => m.BalanceTransactionListComponent),
   },
   {
+    path: 'sellers/:id',
+    loadComponent: () =>
+      import('../modules/seller/seller-detail/seller-detail.component').then((m) => m.SellerDetailComponent),
+    children: [
+      {
+        path: 'balance',
+        loadComponent: () =>
+          import('../modules/seller/seller-detail/seller-balance/seller-balance.component').then((m) => m.SellerBalanceComponent),
+      },
+      {
+        path: '',
+        redirectTo: 'balance',
+        pathMatch: 'full',
+      }
+    ],
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

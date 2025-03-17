@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="modal-title" >Topup</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
+        <!--begin::Alert-->
+        <div class="alert alert-info d-flex align-items-center p-5">
+            <!--begin::Icon-->
+            <i class="bi bi-info-circle-fill fs-2hx text-info me-4"></i>
+            <!--end::Icon-->
+
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-column">
+                <!--begin::Title-->
+                <!-- <h4 class="mb-1 text-dark">This is an alert</h4> -->
+                <!--end::Title-->
+
+                <!--begin::Content-->
+                <span>Please enter full amount received. Loading fee will be automatically deducted.</span>
+                <!--end::Content-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Alert-->
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtAmount" class="form-label">Amount</label>
+                <input type="number" id="txtAmount" name="Amount" class="form-control"
+                    [class.is-valid]="formGroup.controls['Amount'].valid && (formGroup.controls['Amount'].dirty || formGroup.controls['Amount'].touched)"
+                    [class.is-invalid]="formGroup.controls['Amount'].invalid && (formGroup.controls['Amount'].dirty || formGroup.controls['Amount'].touched)"
+                    formControlName="Amount"/>
+                <div *ngIf="formGroup.controls['Amount'].hasError('min')" class="invalid-feedback">Minimum value is 1</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtRefId" class="form-label">Ref. No.</label>
+                <input type="text" id="txtRefId" name="RefId" class="form-control"
+                    [class.is-valid]="formGroup.controls['RefId'].valid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
+                    [class.is-invalid]="formGroup.controls['RefId'].invalid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
+                    formControlName="RefId"/>
+                <div *ngIf="formGroup.controls['RefId'].hasError('required')" class="invalid-feedback">Ref. No. is required</div>
+                <div *ngIf="formGroup.controls['RefId'].hasError('maxlength')" class="invalid-feedback">Ref. No. must be at most 255 characters long</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtNote" class="form-label">Note</label>
+                <input type="text" id="txtNote" name="Note" class="form-control"
+                    [class.is-valid]="formGroup.controls['Note'].valid && (formGroup.controls['Note'].dirty || formGroup.controls['Note'].touched)"
+                    [class.is-invalid]="formGroup.controls['Note'].invalid && (formGroup.controls['Note'].dirty || formGroup.controls['Note'].touched)"
+                    formControlName="Note"/>
+                <div *ngIf="formGroup.controls['Note'].hasError('maxlength')" class="invalid-feedback">Note must be at most 255 characters long</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+    <button class="btn btn-primary" [disabled]="!formGroup || !formGroup.valid" (click)="onSubmit()">
+        <i class="bi bi-floppy fs-3"></i> Submit
+    </button>
+</div>
