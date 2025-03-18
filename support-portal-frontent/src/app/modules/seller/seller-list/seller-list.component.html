@@ -1,0 +1,33 @@
+<h1>Sellers</h1>
+
+<div class="card mt-4">
+    
+    <div class="card-body">
+      <ejs-grid #grid id="order-list" [dataSource]='data' 
+        allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
+        [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'seller_id', direction: 'Descending' }] }"
+        [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
+        allowTextWrap='true'
+       >
+        <e-columns>
+            <e-column field='seller_id' headerText='Seller ID' textAlign='Right'></e-column>
+            <e-column field='seller_name' headerText='Seller Name' >
+                <ng-template #template let-data>
+                    <a [routerLink]="['/sellers', data.seller_id]">{{data.seller_name}}</a>
+                </ng-template>
+            </e-column>
+            <e-column field='created_at' headerText='Join Date' format="MM/dd/yyyy HH:mm" ></e-column>
+            <e-column field='site' headerText='Market Region'></e-column>
+            <e-column field='active' headerText='Status'>
+                <ng-template #template let-data>
+                    @if(data.active) {
+                        <span class="badge badge-success me-auto">active</span>
+                    } @else {
+                        <span class="badge badge-secondary me-auto">inactive</span>
+                    }
+                </ng-template>
+            </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>

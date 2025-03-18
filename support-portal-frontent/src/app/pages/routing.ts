@@ -39,6 +39,11 @@ const Routing: Routes = [
       import('../modules/balance/balance-transaction-list/balance-transaction-list.component').then((m) => m.BalanceTransactionListComponent),
   },
   {
+    path: 'sellers',
+    loadComponent: () =>
+      import('../modules/seller/seller-list/seller-list.component').then((m) => m.SellerListComponent),
+  },
+  {
     path: 'sellers/:id',
     loadComponent: () =>
       import('../modules/seller/seller-detail/seller-detail.component').then((m) => m.SellerDetailComponent),

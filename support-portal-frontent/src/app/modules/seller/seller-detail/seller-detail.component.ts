@@ -8,6 +8,7 @@ import { SellerDto } from '../_models/SellerDto';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ResponseStatus } from '../../shared/models/base-response.model';
 import { ToastService } from '../../shared/services/toast.service';
+import { PageInfoService } from 'src/app/_metronic/layout';
 
 @Component({
   selector: 'app-seller-detail',
@@ -21,6 +22,7 @@ export class SellerDetailComponent {
   private route = inject(ActivatedRoute);
   private loadingService = inject(LoadingService);
   private toastService = inject(ToastService);
+  private page = inject(PageInfoService);
 
   private subscriptions: Subscription[] = [];
   private disableConfirmDialog: any;
@@ -30,6 +32,7 @@ export class SellerDetailComponent {
   seller: SellerDto;
 
   ngOnInit() {
+    this.page.updateTitle('Seller Detail');
     const routeSub = this.route.params.subscribe(params => {
       this.sellerId = params['id'];
       this.loadData();
