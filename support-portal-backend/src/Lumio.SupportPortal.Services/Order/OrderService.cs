@@ -25,9 +25,12 @@ namespace Lumio.SupportPortal.Services.Order
             this.balanceManager = balanceManager;
         }
 
-        public IQueryable<om_order> GetOrdersQueryable()
+        public IQueryable<OrderListDto> GetOrdersQueryable()
         {
-            return dbContext.om_orders
+            FormattableString sql = $@"SELECT o.order_id, o.sale_date, o.created_at, s.seller_name, o.item_title, o.quantity, o.market_total_price, o.order_status
+                            FROM om_orders o
+                            JOIN sellers s ON o.seller_id = s.seller_id";
+            return dbContext.Database.SqlQuery<OrderListDto>(sql)
                 .AsNoTracking();
         }
 

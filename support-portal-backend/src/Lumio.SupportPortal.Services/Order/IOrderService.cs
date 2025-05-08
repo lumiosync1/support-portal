@@ -8,7 +8,7 @@ namespace Lumio.SupportPortal.Services.Order
         
         public Task<OrderDetailDto> GetOrderDetailAsync(int orderId);
 
-        public IQueryable<om_order> GetOrdersQueryable();
+        public IQueryable<OrderListDto> GetOrdersQueryable();
 
         public Task RemoveOrderAsync(int orderId);
 

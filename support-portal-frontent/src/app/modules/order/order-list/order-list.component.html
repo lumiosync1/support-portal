@@ -3,16 +3,15 @@
 <div class="card mt-4">
     
     <div class="card-body">
-      <ejs-grid #grid id="order-list" [dataSource]='data' 
+      <ejs-grid #grid [dataSource]='data' 
         allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
         [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
         [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
         allowTextWrap='true'
-        [enablePersistence]='true'
        >
         <e-columns>
             <e-column field='order_id' headerText='ID' textAlign='Right' width="70"></e-column>
-            <e-column field='created_by' headerText='Seller' ></e-column>
+            <e-column field='seller_name' headerText='Seller' ></e-column>
             <e-column field='item_title' headerText='Item' width="300">
                 <ng-template #template let-data>
                     <a [routerLink]="['/orders', data.order_id]">{{data.item_title}}</a>

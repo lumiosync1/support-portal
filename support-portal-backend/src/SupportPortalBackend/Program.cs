@@ -5,6 +5,7 @@ using Lumio.Domain.Entities;
 using Lumio.Domain.Utils;
 using Lumio.DomainServices;
 using Lumio.SupportPortal.Services.Auth;
+using Lumio.SupportPortal.Services.Order;
 using Lumio.SupportPortal.Services.Seller;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
@@ -105,7 +106,7 @@ namespace SupportPortalBackend
             var modelBuilder = new ODataConventionModelBuilder();
             modelBuilder.EntitySet<seller>("SellersOdata").EntityType.HasKey(e => e.seller_id);
             //modelBuilder.EntitySet<portal_order_import>("OrderImportsOdata").EntityType.HasKey(e => e.import_id);
-            modelBuilder.EntitySet<om_order>("OrdersOdata").EntityType.HasKey(e => e.order_id);
+            modelBuilder.EntitySet<OrderListDto>("OrdersOdata").EntityType.HasKey(e => e.order_id);
             modelBuilder.EntitySet<BalanceTransactionListDto>("BalanceTransactionsOdata").EntityType.HasKey(e => e.tx_id);
 
             return modelBuilder;
