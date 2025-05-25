@@ -10,13 +10,15 @@ import { ResponseStatus } from 'src/app/modules/shared/models/base-response.mode
 import { CurrencyPipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth';
-import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TopupModalComponent } from './topup-modal/topup-modal.component';
+import { WithdrawModalComponent } from './withdraw-modal/withdraw-modal.component';
+import { AdjustModalComponent } from './adjust-modal/adjust-modal.component';
 
 @Component({
   selector: 'app-seller-balance',
   standalone: true,
-  imports: [CurrencyPipe, GridModule, NgbModalModule],
+  imports: [CurrencyPipe, GridModule, NgbModalModule, NgbDropdownModule],
   providers: [SortService, FilterService, PageService],
   templateUrl: './seller-balance.component.html',
   styleUrl: './seller-balance.component.scss'
@@ -102,4 +104,27 @@ export class SellerBalanceComponent {
     );
   }
 
+  openWithdrawModal() {
+    const modalRef = this.modalService.open(WithdrawModalComponent, { backdrop: 'static', scrollable: true, size: 'md' });
+    modalRef.componentInstance.seller = this.seller;
+    modalRef.result.then(
+      () => {
+        this.getBalance();
+        this.grid.refresh();
+      },
+      () => {}
+    );
+  }
+
+  openAdjustModal() {
+    const modalRef = this.modalService.open(AdjustModalComponent, { backdrop: 'static', scrollable: true, size: 'md' });
+    modalRef.componentInstance.seller = this.seller;
+    modalRef.result.then(
+      () => {
+        this.getBalance();
+        this.grid.refresh();
+      },
+      () => {}
+    );
+  }
 }

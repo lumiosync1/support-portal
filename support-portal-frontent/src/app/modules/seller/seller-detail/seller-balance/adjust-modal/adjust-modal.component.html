@@ -1,28 +1,9 @@
 <div class="modal-header">
-    <h4 class="modal-title" >Topup</h4>
+    <h4 class="modal-title" >Adjustment</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
     <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
-        <!--begin::Alert-->
-        <div class="alert alert-info d-flex align-items-center p-5">
-            <!--begin::Icon-->
-            <i class="bi bi-info-circle-fill fs-2hx text-info me-4"></i>
-            <!--end::Icon-->
-
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-column">
-                <!--begin::Title-->
-                <!-- <h4 class="mb-1 text-dark">This is an alert</h4> -->
-                <!--end::Title-->
-
-                <!--begin::Content-->
-                <span>Please enter full amount received. Loading fee will be automatically deducted.</span>
-                <!--end::Content-->
-            </div>
-            <!--end::Wrapper-->
-        </div>
-        <!--end::Alert-->
         <div class="row mb-4">
             <div class="col-12">
                 <label for="txtAmount" class="form-label">Amount</label>
@@ -35,23 +16,33 @@
         </div>
         <div class="row mb-4">
             <div class="col-12">
-                <label for="txtRefId" class="form-label">Ref. No.</label>
-                <input type="text" id="txtRefId" name="RefId" class="form-control"
-                    [class.is-valid]="formGroup.controls['RefId'].valid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
-                    [class.is-invalid]="formGroup.controls['RefId'].invalid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
-                    formControlName="RefId"/>
-                <div *ngIf="formGroup.controls['RefId'].hasError('required')" class="invalid-feedback">Ref. No. is required</div>
-                <div *ngIf="formGroup.controls['RefId'].hasError('maxlength')" class="invalid-feedback">Ref. No. must be at most 255 characters long</div>
+                <label class="form-label">Debit/Credit</label>
+                <div class="d-flex gap-4">
+                    <div class="form-check form-check-custom form-check-solid">
+                        <input class="form-check-input" type="radio" name="Debit" id="debit" [value]="true" formControlName="Debit">
+                        <label class="form-check-label" for="debit">
+                            Debit (-)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-custom form-check-solid">
+                        <input class="form-check-input" type="radio" name="Debit" id="credit" [value]="false" formControlName="Debit">
+                        <label class="form-check-label" for="credit">
+                            Credit (+)
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-12">
-                <label for="txtNote" class="form-label">Note (optional)</label>
+                <label for="txtNote" class="form-label">Note</label>
                 <input type="text" id="txtNote" name="Note" class="form-control"
                     [class.is-valid]="formGroup.controls['Note'].valid && (formGroup.controls['Note'].dirty || formGroup.controls['Note'].touched)"
                     [class.is-invalid]="formGroup.controls['Note'].invalid && (formGroup.controls['Note'].dirty || formGroup.controls['Note'].touched)"
                     formControlName="Note"/>
+                <span class="form-text">Why are you making this adjustment?</span>
                 <div *ngIf="formGroup.controls['Note'].hasError('maxlength')" class="invalid-feedback">Note must be at most 255 characters long</div>
+                <div *ngIf="formGroup.controls['Note'].hasError('required')" class="invalid-feedback">Note is required for adjustment</div>
             </div>
         </div>
     </form>

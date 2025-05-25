@@ -12,13 +12,13 @@ import { ResponseStatus } from 'src/app/modules/shared/models/base-response.mode
 import { BalanceTransactionCreateDto } from '../../../_models/BalanceTransactionCreateDto';
 
 @Component({
-  selector: 'app-topup-modal',
+  selector: 'app-withdraw-modal',
   standalone: true,
   imports: [NgIf, ReactiveFormsModule],
-  templateUrl: './topup-modal.component.html',
-  styleUrl: './topup-modal.component.scss'
+  templateUrl: './withdraw-modal.component.html',
+  styleUrl: './withdraw-modal.component.scss'
 })
-export class TopupModalComponent {
+export class WithdrawModalComponent {
   private sellerService = inject(SellerService);
   private loadingService = inject(LoadingService);
   private toast = inject(ToastService);
@@ -56,13 +56,13 @@ export class TopupModalComponent {
       amount: this.formGroup.value.Amount,
       ref_id: this.formGroup.value.RefId,
       note: this.formGroup.value.Note,
-      tx_code: 'TOPUP',
+      tx_code: 'WITHDRAW',
       // below fields will be filled by backend
       created_by: '',
-      debit: false,
+      debit: true,
       order_id: null,
     };
-    const sub = this.sellerService.topupBalance(dto)
+    const sub = this.sellerService.withdrawBalance(dto)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
@@ -71,10 +71,9 @@ export class TopupModalComponent {
         this.toast.showError(res.Message);
         return;
       }
-      this.toast.showSuccess('Topup successful');
+      this.toast.showSuccess('Withdraw successful');
       this.activeModal.close();
     })
     this.subscriptions.push(sub);
   }
-
 }

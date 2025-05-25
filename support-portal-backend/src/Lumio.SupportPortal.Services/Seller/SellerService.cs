@@ -29,7 +29,7 @@ namespace Lumio.SupportPortal.Services.Seller
         public async Task<SellerDto> GetSellerAsync(int sellerId)
         {
             var seller = await dbContext.sellers.FindAsync(sellerId);
-            if(seller == null)
+            if (seller == null)
             {
                 throw new Exception("Seller not found");
             }
@@ -102,7 +102,7 @@ namespace Lumio.SupportPortal.Services.Seller
             dto.created_by = authService.CurrentUser.UserName;
 
             var dbTransaction = await dbContext.Database.BeginTransactionAsync();
-            
+
             try
             {
                 await balanceManager.CreateTransactionAsync(dto);
@@ -132,6 +132,33 @@ namespace Lumio.SupportPortal.Services.Seller
                 await dbTransaction.RollbackAsync();
                 throw e;
             }
+        }
+
+        public async Task WithdrawBalanceAsync(BalanceTransactionCreateDto dto)
+        {
+            // make sure correct data
+            dto.debit = true;
+            dto.amount = -1 * Math.Abs(dto.amount);
+            dto.tx_code = BalanceTransactionCodes.WITHDRAW;
+            dto.created_by = authService.CurrentUser.UserName;
+
+            await balanceManager.CreateTransactionAsync(dto);
+        }
+
+        public async Task AdjustBalanceAsync(BalanceTransactionCreateDto dto)
+        {
+            // make sure correct data
+            dto.created_by = authService.CurrentUser.UserName;
+            dto.tx_code = BalanceTransactionCodes.ADJUSTMENT;
+            if (dto.debit)
+            {
+                dto.amount = -1 * Math.Abs(dto.amount);
+            }
+            else
+            {
+                dto.amount = Math.Abs(dto.amount);
+            }
+            await balanceManager.CreateTransactionAsync(dto);
         }
     }
 }

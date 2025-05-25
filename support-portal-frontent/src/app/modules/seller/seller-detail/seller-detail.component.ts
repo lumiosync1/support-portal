@@ -9,11 +9,12 @@ import { LoadingService } from '../../shared/services/loading.service';
 import { ResponseStatus } from '../../shared/models/base-response.model';
 import { ToastService } from '../../shared/services/toast.service';
 import { PageInfoService } from 'src/app/_metronic/layout';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-seller-detail',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, DatePipe],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, DatePipe, NgbDropdownModule],
   templateUrl: './seller-detail.component.html',
   styleUrl: './seller-detail.component.scss'
 })

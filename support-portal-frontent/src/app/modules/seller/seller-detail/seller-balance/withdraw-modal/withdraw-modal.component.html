@@ -1,28 +1,9 @@
 <div class="modal-header">
-    <h4 class="modal-title" >Topup</h4>
+    <h4 class="modal-title" >Withdraw</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
     <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
-        <!--begin::Alert-->
-        <div class="alert alert-info d-flex align-items-center p-5">
-            <!--begin::Icon-->
-            <i class="bi bi-info-circle-fill fs-2hx text-info me-4"></i>
-            <!--end::Icon-->
-
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-column">
-                <!--begin::Title-->
-                <!-- <h4 class="mb-1 text-dark">This is an alert</h4> -->
-                <!--end::Title-->
-
-                <!--begin::Content-->
-                <span>Please enter full amount received. Loading fee will be automatically deducted.</span>
-                <!--end::Content-->
-            </div>
-            <!--end::Wrapper-->
-        </div>
-        <!--end::Alert-->
         <div class="row mb-4">
             <div class="col-12">
                 <label for="txtAmount" class="form-label">Amount</label>
@@ -40,6 +21,7 @@
                     [class.is-valid]="formGroup.controls['RefId'].valid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
                     [class.is-invalid]="formGroup.controls['RefId'].invalid && (formGroup.controls['RefId'].dirty || formGroup.controls['RefId'].touched)"
                     formControlName="RefId"/>
+                <span class="form-text">Transaction ID of withdraw transaction in Payoneer/bank</span>
                 <div *ngIf="formGroup.controls['RefId'].hasError('required')" class="invalid-feedback">Ref. No. is required</div>
                 <div *ngIf="formGroup.controls['RefId'].hasError('maxlength')" class="invalid-feedback">Ref. No. must be at most 255 characters long</div>
             </div>

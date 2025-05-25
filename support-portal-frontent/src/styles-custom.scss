@@ -59,3 +59,7 @@
     color: white;
 }
 
+// remove caret from ngb dropdown, should be put in toggle button
+.remove-caret::after {
+    display: none !important;
+}

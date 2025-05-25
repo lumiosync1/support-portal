@@ -112,7 +112,7 @@ namespace SupportPortalBackend.Controllers
             }
         }
 
-        [Route("{sellerId}/balance")]
+        [Route("{sellerId}/balance/topup")]
         [HttpPost]
         public async Task<BaseResponse<string>> TopupAsync(BalanceTransactionCreateDto dto)
         {
@@ -120,6 +120,48 @@ namespace SupportPortalBackend.Controllers
             try
             {
                 await sellerService.TopupAsync(dto);
+                response.Data = "Success";
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = ResponseStatus.Error;
+                response.Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                response.Data = null;
+                response.AdditionalInfo = ex.StackTrace;
+                return response;
+            }
+        }
+
+        [HttpPost("{sellerId}/balance/withdraw")]
+        public async Task<BaseResponse<string>> WithdrawAsync(BalanceTransactionCreateDto dto)
+        {
+            BaseResponse<string> response = new BaseResponse<string>();
+            try
+            {
+                await sellerService.WithdrawBalanceAsync(dto);
+                response.Data = "Success";
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = ResponseStatus.Error;
+                response.Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                response.Data = null;
+                response.AdditionalInfo = ex.StackTrace;
+                return response;
+            }
+        }
+
+        [HttpPost("{sellerId}/balance/adjust")]
+        public async Task<BaseResponse<string>> AdjustBalanceAsync(BalanceTransactionCreateDto dto)
+        {
+            BaseResponse<string> response = new BaseResponse<string>();
+            try
+            {
+                await sellerService.AdjustBalanceAsync(dto);
                 response.Data = "Success";
                 response.Status = ResponseStatus.Success;
                 return response;

@@ -12,13 +12,13 @@ import { ResponseStatus } from 'src/app/modules/shared/models/base-response.mode
 import { BalanceTransactionCreateDto } from '../../../_models/BalanceTransactionCreateDto';
 
 @Component({
-  selector: 'app-topup-modal',
+  selector: 'app-adjust-modal',
   standalone: true,
   imports: [NgIf, ReactiveFormsModule],
-  templateUrl: './topup-modal.component.html',
-  styleUrl: './topup-modal.component.scss'
+  templateUrl: './adjust-modal.component.html',
+  styleUrl: './adjust-modal.component.scss'
 })
-export class TopupModalComponent {
+export class AdjustModalComponent {
   private sellerService = inject(SellerService);
   private loadingService = inject(LoadingService);
   private toast = inject(ToastService);
@@ -41,8 +41,8 @@ export class TopupModalComponent {
   createForm() {
     this.formGroup = this.fb.group({
       Amount: [0, [Validators.required, Validators.min(1)]],
-      RefId: ['', [Validators.maxLength(255), Validators.required]],
-      Note: ['', [Validators.maxLength(255)]]
+      Debit: [null, [Validators.required]],
+      Note: ['', [Validators.maxLength(255), Validators.required]]
     });
   }
 
@@ -53,28 +53,28 @@ export class TopupModalComponent {
     this.loadingService.showLoading();
     const dto: BalanceTransactionCreateDto = {
       seller_id: this.seller.seller_id,
+      debit: this.formGroup.value.Debit,
       amount: this.formGroup.value.Amount,
-      ref_id: this.formGroup.value.RefId,
       note: this.formGroup.value.Note,
-      tx_code: 'TOPUP',
+      ref_id: '',
       // below fields will be filled by backend
+      tx_code: 'ADJUSTMENT',
       created_by: '',
-      debit: false,
       order_id: null,
     };
-    const sub = this.sellerService.topupBalance(dto)
+    const sub = this.sellerService.adjustBalance(dto)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
     .subscribe(res => {
       if(res.Status != ResponseStatus.Success) {
+        console.error(res);
         this.toast.showError(res.Message);
         return;
       }
-      this.toast.showSuccess('Topup successful');
+      this.toast.showSuccess('Adjustment successful');
       this.activeModal.close();
     })
     this.subscriptions.push(sub);
   }
-
 }

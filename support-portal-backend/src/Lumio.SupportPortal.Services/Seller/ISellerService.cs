@@ -18,5 +18,9 @@ namespace Lumio.SupportPortal.Services.Seller
         public Task<string?> GetSettingAsync(int sellerId, string key);
 
         public Task TopupAsync(BalanceTransactionCreateDto dto);
+
+        public Task WithdrawBalanceAsync(BalanceTransactionCreateDto dto);
+
+        public Task AdjustBalanceAsync(BalanceTransactionCreateDto dto);
     }
 }

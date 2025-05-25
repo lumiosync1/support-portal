@@ -3,9 +3,22 @@
         <h3 class="card-title">Available Balance: {{balance | currency:'USD'}}</h3>
         <div class="card-toolbar">
             @if(allowTopup) {
-                <button class="btn btn-sm btn-primary" (click)="openTopupModal()">
-                    <i class="bi bi-coin fs-2"></i> Topup
-                </button>
+                <div ngbDropdown class="d-inline-block">
+                    <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>
+                        Action
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button ngbDropdownItem (click)="openTopupModal()">
+                            <i class="bi bi-coin text-primary fs-3 me-2"></i> Topup
+                        </button>
+                        <button ngbDropdownItem (click)="openWithdrawModal()">
+                            <i class="bi bi-box-arrow-right text-primary fs-3 me-2"></i> Withdraw
+                        </button>
+                        <button ngbDropdownItem (click)="openAdjustModal()">
+                            <i class="bi bi-pencil-square text-primary fs-3 me-2"></i> Adjust
+                        </button>
+                    </div>
+                </div>
             }
         </div>
     </div>

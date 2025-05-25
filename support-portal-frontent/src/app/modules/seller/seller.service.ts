@@ -38,8 +38,16 @@ export class SellerService {
     return this.http.get<BaseResponse<string>>(`${environment.backendUrl}/api/sellers/${id}/balance`);
   }
 
-  topup(dto: BalanceTransactionCreateDto): Observable<BaseResponse<string>> {
-    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/sellers/${dto.seller_id}/balance`, dto);
+  topupBalance(dto: BalanceTransactionCreateDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/sellers/${dto.seller_id}/balance/topup`, dto);
+  }
+
+  withdrawBalance(dto: BalanceTransactionCreateDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/sellers/${dto.seller_id}/balance/withdraw`, dto);
+  }
+
+  adjustBalance(dto: BalanceTransactionCreateDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/sellers/${dto.seller_id}/balance/adjust`, dto);
   }
 
   getSetting(sellerId: number, key: string): Observable<BaseResponse<string>> {
