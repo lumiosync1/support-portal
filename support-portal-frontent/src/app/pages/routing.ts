@@ -61,6 +61,11 @@ const Routing: Routes = [
     ],
   },
   {
+    path: 'supplier-accounts/queue',
+    loadComponent: () =>
+      import('../modules/supplier-account/supplier-account-queue/supplier-account-queue.component').then((m) => m.SupplierAccountQueueComponent),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

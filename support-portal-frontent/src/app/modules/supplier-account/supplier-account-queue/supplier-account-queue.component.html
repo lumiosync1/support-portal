@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Supplier Account Queue</h3>
+        <div class="card-toolbar">
+            <button class="btn btn-primary" (click)="loadData()">Refresh</button>
+        </div>
+    </div>
+    <div class="card-body">
+        @if(data.length > 0) {
+            <ejs-grid #grid [dataSource]='data' 
+                allowPaging='true' [pageSettings]='{ pageSize: 200, pageSizes: [20, 200, 300] }' 
+                [allowSorting]='true' 
+                [sortSettings]="{ columns: [{ field: 'available_at', direction: 'Ascending' }] }"
+                [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
+                allowTextWrap='true'
+                enableStickyHeader=true
+                >
+                <e-columns>
+                    <e-column field='account_id' headerText='ID' textAlign='Right' width="70"></e-column>
+                    <e-column field='account_name' headerText='Name'>
+                        <ng-template #template let-data>
+                            @if(data.allow_purchase) {
+                                <span class="text-dark">{{data.account_name}}</span>
+                            } @else {
+                                <span class="text-muted">{{data.account_name}}</span>
+                            }
+                            @if(data.limit24h) {
+                                <span class="badge badge-danger">24h</span>
+                            }
+                            @if(data.limit1h) {
+                                <span class="badge badge-warning">1h</span>
+                            }
+                            @if(!data.limit1h && !data.limit24h && data.allow_purchase) {
+                                <i class="bi bi-shield-fill-check text-success fs-3"></i>
+                            }
+                        </ng-template>
+                    </e-column>
+                    <e-column field='current_task' headerText='Current Task'></e-column>
+                    <e-column field='available_at' headerText='Available At' format="dd/MM/yyyy HH:mm:ss"></e-column>
+                    <e-column field='last_purchase_time' headerText='Last Purchase Time' format="dd/MM/yyyy HH:mm:ss"></e-column>
+                    <e-column field='orders_24h' headerText='Orders' textAlign='Right' width="100">
+                        <ng-template #template let-data>
+                            {{data.orders_24h.length}} / {{data.protection_settings.MaxOrders24Hour}}
+                        </ng-template>
+                    </e-column>
+                    <e-column field='last_tracking_time' headerText='Last Tracking Time' format="dd/MM/yyyy HH:mm:ss"></e-column>
+                </e-columns>
+            </ejs-grid>
+        }
+    </div>
+</div>
