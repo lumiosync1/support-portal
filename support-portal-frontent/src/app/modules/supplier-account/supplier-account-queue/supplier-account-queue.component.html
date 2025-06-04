@@ -2,7 +2,8 @@
     <div class="card-header">
         <h3 class="card-title">Supplier Account Queue</h3>
         <div class="card-toolbar">
-            <button class="btn btn-primary" (click)="loadData()">Refresh</button>
+            <button class="btn btn-primary me-2" (click)="loadData()">Refresh</button>
+            <button class="btn btn-warning" (click)="reloadQueue()">Reload Queue</button>
         </div>
     </div>
     <div class="card-body">
@@ -35,15 +36,15 @@
                             }
                         </ng-template>
                     </e-column>
-                    <e-column field='current_task' headerText='Current Task'></e-column>
-                    <e-column field='available_at' headerText='Available At' format="dd/MM/yyyy HH:mm:ss"></e-column>
-                    <e-column field='last_purchase_time' headerText='Last Purchase Time' format="dd/MM/yyyy HH:mm:ss"></e-column>
+                    <e-column field='current_task' headerText='Current Task' width="150"></e-column>
+                    <e-column field='available_at' headerText='Available At' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+                    <e-column field='last_purchase_time' headerText='Last Purchase Time' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
                     <e-column field='orders_24h' headerText='Orders' textAlign='Right' width="100">
                         <ng-template #template let-data>
                             {{data.orders_24h.length}} / {{data.protection_settings.MaxOrders24Hour}}
                         </ng-template>
                     </e-column>
-                    <e-column field='last_tracking_time' headerText='Last Tracking Time' format="dd/MM/yyyy HH:mm:ss"></e-column>
+                    <e-column field='on_hold_to' headerText='On Hold To' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
                 </e-columns>
             </ejs-grid>
         }

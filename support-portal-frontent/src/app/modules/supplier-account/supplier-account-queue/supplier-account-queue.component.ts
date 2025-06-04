@@ -59,6 +59,7 @@ export class SupplierAccountQueueComponent {
         account.limit1h = account.orders_1h.length >= account.protection_settings.MaxOrders1Hour;
         account.limit24h = account.orders_24h.length >= account.protection_settings.MaxOrders24Hour;
 
+        // available at
         if(account.limit1h){
           account.available_at = new Date(account.last_purchase_time.getTime() + 60 * 60 * 1000);
         }
@@ -74,12 +75,36 @@ export class SupplierAccountQueueComponent {
             account.available_at = avai;
           }
         }
+        if(account.on_hold_to) {
+          const onHoldTo = new Date(account.on_hold_to);
+          if(account.available_at) {
+            if(account.available_at < onHoldTo) {
+              account.available_at = onHoldTo;
+            }
+          } else {
+            account.available_at = onHoldTo;
+          }
+        }
+        if(!account.allow_purchase) {
+          account.available_at = new Date(Date.now() + 48 * 60 * 60 * 1000);
+        }
         if(!account.available_at) {
           account.available_at = new Date();
         }
       }
       this.data = accounts;
       this.ref.detectChanges();
+    });
+  }
+
+  reloadQueue() {
+    this.loadingService.showLoading();
+    this.http.post(`http://services.lumiosync.com:5205/accounts/reload`, null)
+    .pipe(
+      finalize(() => this.loadingService.hideLoading())
+    )
+    .subscribe(res => {
+      this.loadData();
     });
   }
 }
