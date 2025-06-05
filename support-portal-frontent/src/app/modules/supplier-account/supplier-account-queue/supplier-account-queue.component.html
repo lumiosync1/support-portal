@@ -45,6 +45,28 @@
                         </ng-template>
                     </e-column>
                     <e-column field='on_hold_to' headerText='On Hold To' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+                    <e-column field='last_tracking_time' headerText='Last Tracking Time' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+
+                    <e-column field='account_id' headerText='Action' width="70">
+                        <ng-template #template let-data>
+                            <div ngbDropdown container="body" class="d-inline-block">
+                                <button type="button" class="btn btn-primary btn-sm btn-icon remove-caret" id="dropdownBasic1" ngbDropdownToggle>
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button ngbDropdownItem (click)="markIdle(data.account_id)">
+                                        <i class="bi bi-shield-fill-check text-primary fs-3"></i> Mark Idle
+                                    </button>
+                                    <button ngbDropdownItem (click)="hold(data.account_id)">
+                                        <i class="bi bi-hourglass-top text-primary fs-3"></i> Hold For 30 minutes
+                                    </button>
+                                    <button ngbDropdownItem (click)="resetLastTrackingTime(data.account_id)">
+                                        <i class="bi bi-clock-history text-primary fs-3"></i> Reset Last Tracking Time
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </e-column>
                 </e-columns>
             </ejs-grid>
         }

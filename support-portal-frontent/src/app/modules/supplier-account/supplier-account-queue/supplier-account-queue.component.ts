@@ -4,11 +4,12 @@ import { PageInfoService } from 'src/app/_metronic/layout';
 import { HttpClient } from '@angular/common/http';
 import { LoadingService } from '../../shared/services/loading.service';
 import { finalize } from 'rxjs/operators';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-supplier-account-queue',
   standalone: true,
-  imports: [GridModule],
+  imports: [GridModule, NgbDropdownModule],
   providers: [SortService, FilterService, PageService],
   templateUrl: './supplier-account-queue.component.html',
   styleUrl: './supplier-account-queue.component.scss'
@@ -100,6 +101,44 @@ export class SupplierAccountQueueComponent {
   reloadQueue() {
     this.loadingService.showLoading();
     this.http.post(`http://services.lumiosync.com:5205/accounts/reload`, null)
+    .pipe(
+      finalize(() => this.loadingService.hideLoading())
+    )
+    .subscribe(res => {
+      this.loadData();
+    });
+  }
+
+  markIdle(account_id: number) {
+    this.loadingService.showLoading();
+    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/idle`, null)
+    .pipe(
+      finalize(() => this.loadingService.hideLoading())
+    )
+    .subscribe(res => {
+      this.loadData();
+    });
+  }
+
+  hold(account_id: number) {
+    this.loadingService.showLoading();
+    const formData = new FormData();
+    formData.append('duration', '30');
+    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/hold`, formData)
+    .pipe(
+      finalize(() => this.loadingService.hideLoading())
+    )
+    .subscribe(res => {
+      this.loadData();
+    });
+  }
+
+  resetLastTrackingTime(account_id: number) {
+    this.loadingService.showLoading();
+    const formData = new FormData();
+    // set last tracking time to 7 hours ago
+    formData.append('time', new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString());
+    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/last-tracking-time`, formData)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
