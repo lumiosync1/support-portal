@@ -54,6 +54,9 @@
                                     <i class="bi bi-three-dots"></i>
                                 </button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button ngbDropdownItem (click)="openDetail(data)">
+                                        <i class="bi bi-info-circle text-primary fs-3"></i> Detail
+                                    </button>
                                     <button ngbDropdownItem (click)="markIdle(data.account_id)">
                                         <i class="bi bi-shield-fill-check text-primary fs-3"></i> Mark Idle
                                     </button>
@@ -72,3 +75,16 @@
         }
     </div>
 </div>
+
+<ng-template #detailModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<pre>{{ selectedAccount | json }}</pre>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Save</button>
+	</div>
+</ng-template>

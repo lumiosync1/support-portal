@@ -1,15 +1,16 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { FilterService, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
 import { PageInfoService } from 'src/app/_metronic/layout';
 import { HttpClient } from '@angular/common/http';
 import { LoadingService } from '../../shared/services/loading.service';
 import { finalize } from 'rxjs/operators';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-supplier-account-queue',
   standalone: true,
-  imports: [GridModule, NgbDropdownModule],
+  imports: [GridModule, NgbDropdownModule, JsonPipe],
   providers: [SortService, FilterService, PageService],
   templateUrl: './supplier-account-queue.component.html',
   styleUrl: './supplier-account-queue.component.scss'
@@ -19,8 +20,12 @@ export class SupplierAccountQueueComponent {
   private http = inject(HttpClient);
   private ref = inject(ChangeDetectorRef);
   private loadingService = inject(LoadingService);
+  private modalService = inject(NgbModal);
   
+  @ViewChild('detailModal') detailModal: TemplateRef<any>;
+
   data: Object[] = [];
+  selectedAccount: any;
 
   ngOnInit(): void {
     this.page.updateTitle('Supplier Account Queue');
@@ -145,5 +150,10 @@ export class SupplierAccountQueueComponent {
     .subscribe(res => {
       this.loadData();
     });
+  }
+
+  openDetail(account: any) {
+    this.selectedAccount = account;
+    this.modalService.open(this.detailModal);
   }
 }
