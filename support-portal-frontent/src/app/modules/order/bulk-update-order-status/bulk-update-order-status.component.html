@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="newStatus" class="form-label required">New Status</label>
+            <select formControlName="NewStatus" class="form-select"
+              [class.is-valid]="formGroup.controls['NewStatus'].valid && (formGroup.controls['NewStatus'].dirty || formGroup.controls['NewStatus'].touched)"
+              [class.is-invalid]="formGroup.controls['NewStatus'].invalid && (formGroup.controls['NewStatus'].dirty || formGroup.controls['NewStatus'].touched)">
+              <option value="">-- Select Status --</option>
+              <option value="pending">Pending</option>
+              <option value="error">Error</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="returned">Returned</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="removed">Removed</option>
+            </select>
+            <div *ngIf="formGroup.controls['NewStatus'].hasError('required')" class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="reason" class="form-label required">Reason</label>
+            <input type="text" formControlName="Reason" class="form-control"
+              [class.is-valid]="formGroup.controls['Reason'].valid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)"
+              [class.is-invalid]="formGroup.controls['Reason'].invalid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)">
+            <div class="form-text">Enter reason for the status change</div>
+            <div *ngIf="formGroup.controls['Reason'].hasError('required')" class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="orderIds" class="form-label required">Order IDs</label>
+            <textarea formControlName="OrderIds" class="form-control"
+              [class.is-valid]="formGroup.controls['OrderIds'].valid && (formGroup.controls['OrderIds'].dirty || formGroup.controls['OrderIds'].touched)"
+              [class.is-invalid]="formGroup.controls['OrderIds'].invalid && (formGroup.controls['OrderIds'].dirty || formGroup.controls['OrderIds'].touched)"></textarea>
+            <div class="form-text">Enter order IDs separated by commas or each order ID on a new line</div>
+            <div *ngIf="formGroup.controls['OrderIds'].hasError('required')" class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-4" [disabled]="!formGroup.valid">Update Status</button>
+    </form>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { OrderDetailDto } from './_models/OrderDetailDto';
 import { BaseResponse } from '../shared/models/base-response.model';
 import { PushOrderToQueueDto } from './_models/PushOrderToQueueDto';
+import { BulkUpdateStatusDto } from './_models/BulkUpdateStatusDto';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class OrderService {
 
   pushOrderToQueue(dto: PushOrderToQueueDto): Observable<BaseResponse<string>> {
     return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/orders/queue`, dto);
+  }
+
+  bulkUpdateOrderStatus(dto: BulkUpdateStatusDto): Observable<BaseResponse<string>> {
+    return this.http.put<BaseResponse<string>>(`${environment.backendUrl}/api/orders/status-bulk`, dto);
   }
 }

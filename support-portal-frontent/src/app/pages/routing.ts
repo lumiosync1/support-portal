@@ -24,6 +24,11 @@ const Routing: Routes = [
       import('../modules/order/order-list/order-list.component').then((m) => m.OrderListComponent),
   },
   {
+    path: 'bulk-update-order-status',
+    loadComponent: () =>
+      import('../modules/order/bulk-update-order-status/bulk-update-order-status.component').then((m) => m.BulkUpdateOrderStatusComponent),
+  },
+  {
     path: 'orders/:id',
     loadComponent: () =>
       import('../modules/order/order-detail/order-detail.component').then((m) => m.OrderDetailComponent),
