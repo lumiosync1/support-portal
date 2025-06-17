@@ -1,0 +1,122 @@
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <h5>Update Supplier Account</h5>
+        </div>
+        <div class="card-toolbar">
+            <a class="btn btn-secondary me-2" routerLink="/supplier-accounts">
+                <i class="bi bi-arrow-left fs-3"></i> Cancel
+            </a>
+            <button class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onSubmit()">Save</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="formGroup">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="allow_purchase" value="" id="cbAllowPurchase" />
+                        <label class="form-label" for="cbAllowPurchase">
+                            Allow Purchase
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="enabled" value="" id="cbEnabled" />
+                        <label class="form-label" for="cbEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Account Name</label>
+                        <input type="text" formControlName="account_name" class="form-control" placeholder="Account Name"
+                        [class.is-valid]="formGroup.controls['account_name'].valid && (formGroup.controls['account_name'].dirty || formGroup.controls['account_name'].touched)"
+                        [class.is-invalid]="formGroup.controls['account_name'].invalid && (formGroup.controls['account_name'].dirty || formGroup.controls['account_name'].touched)">
+                        <div *ngIf="formGroup.controls['account_name'].hasError('required')" class="invalid-feedback">Account name is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Account Password</label>
+                        <input type="password" formControlName="account_password" class="form-control" placeholder="Account Password"
+                        [class.is-valid]="formGroup.controls['account_password'].valid && (formGroup.controls['account_password'].dirty || formGroup.controls['account_password'].touched)"
+                        [class.is-invalid]="formGroup.controls['account_password'].invalid && (formGroup.controls['account_password'].dirty || formGroup.controls['account_password'].touched)">
+                        <div *ngIf="formGroup.controls['account_password'].hasError('required')" class="invalid-feedback">Account password is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">ML Profile ID</label>
+                        <input type="text" formControlName="ml_profile" class="form-control" placeholder="ML Profile ID"
+                        [class.is-valid]="formGroup.controls['ml_profile'].valid && (formGroup.controls['ml_profile'].dirty || formGroup.controls['ml_profile'].touched)"
+                        [class.is-invalid]="formGroup.controls['ml_profile'].invalid && (formGroup.controls['ml_profile'].dirty || formGroup.controls['ml_profile'].touched)">
+                        <div *ngIf="formGroup.controls['ml_profile'].hasError('required')" class="invalid-feedback">ML Profile ID is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Supplier</label>
+                        <select formControlName="supplier" class="form-select"
+                        [class.is-valid]="formGroup.controls['supplier'].valid && (formGroup.controls['supplier'].dirty || formGroup.controls['supplier'].touched)"
+                        [class.is-invalid]="formGroup.controls['supplier'].invalid && (formGroup.controls['supplier'].dirty || formGroup.controls['supplier'].touched)">
+                        <option value="">-- Select Supplier --</option>
+                        <option value="amazon">Amazon</option>
+                        </select>
+                        <div *ngIf="formGroup.controls['supplier'].hasError('required')" class="invalid-feedback">Supplier is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Country</label>
+                        <select formControlName="site" class="form-select"
+                        [class.is-valid]="formGroup.controls['site'].valid && (formGroup.controls['site'].dirty || formGroup.controls['site'].touched)"
+                        [class.is-invalid]="formGroup.controls['site'].invalid && (formGroup.controls['site'].dirty || formGroup.controls['site'].touched)">
+                        <option value="">-- Select Country --</option>
+                        <option value="US">US</option>
+                        </select>
+                        <div *ngIf="formGroup.controls['site'].hasError('required')" class="invalid-feedback">Site is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Max Orders 1h</label>
+                        <input type="number" formControlName="max_orders_1h" class="form-control" placeholder="Max Orders 1h"
+                        [class.is-valid]="formGroup.controls['max_orders_1h'].valid && (formGroup.controls['max_orders_1h'].dirty || formGroup.controls['max_orders_1h'].touched)"
+                        [class.is-invalid]="formGroup.controls['max_orders_1h'].invalid && (formGroup.controls['max_orders_1h'].dirty || formGroup.controls['max_orders_1h'].touched)">
+                        <div *ngIf="formGroup.controls['max_orders_1h'].hasError('required')" class="invalid-feedback">Max Orders 1h is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label required">Max Orders 24h</label>
+                        <input type="number" formControlName="max_orders_24h" class="form-control" placeholder="Max Orders 24h"
+                        [class.is-valid]="formGroup.controls['max_orders_24h'].valid && (formGroup.controls['max_orders_24h'].dirty || formGroup.controls['max_orders_24h'].touched)"
+                        [class.is-invalid]="formGroup.controls['max_orders_24h'].invalid && (formGroup.controls['max_orders_24h'].dirty || formGroup.controls['max_orders_24h'].touched)">
+                        <div *ngIf="formGroup.controls['max_orders_24h'].hasError('required')" class="invalid-feedback">Max Orders 24h is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label">Note</label>
+                        <textarea formControlName="note" class="form-control" placeholder="Note"
+                        [class.is-valid]="formGroup.controls['note'].valid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
+                        [class.is-invalid]="formGroup.controls['note'].invalid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

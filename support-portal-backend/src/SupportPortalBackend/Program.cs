@@ -108,6 +108,7 @@ namespace SupportPortalBackend
             //modelBuilder.EntitySet<portal_order_import>("OrderImportsOdata").EntityType.HasKey(e => e.import_id);
             modelBuilder.EntitySet<OrderListDto>("OrdersOdata").EntityType.HasKey(e => e.order_id);
             modelBuilder.EntitySet<BalanceTransactionListDto>("BalanceTransactionsOdata").EntityType.HasKey(e => e.tx_id);
+            modelBuilder.EntitySet<supplier_account>("SupplierAccountsOdata").EntityType.HasKey(e => e.account_id);
 
             return modelBuilder;
         }

@@ -66,9 +66,24 @@ const Routing: Routes = [
     ],
   },
   {
+    path: 'supplier-accounts',
+    loadComponent: () =>
+      import('../modules/supplier-account/supplier-account-list/supplier-account-list.component').then((m) => m.SupplierAccountListComponent),
+  },
+  {
+    path: 'supplier-accounts/add',
+    loadComponent: () =>
+      import('../modules/supplier-account/supplier-account-add/supplier-account-add.component').then((m) => m.SupplierAccountAddComponent),
+  },
+  {
     path: 'supplier-accounts/queue',
     loadComponent: () =>
       import('../modules/supplier-account/supplier-account-queue/supplier-account-queue.component').then((m) => m.SupplierAccountQueueComponent),
+  },
+  {
+    path: 'supplier-accounts/:id',
+    loadComponent: () =>
+      import('../modules/supplier-account/supplier-account-update/supplier-account-update.component').then((m) => m.SupplierAccountUpdateComponent),
   },
   {
     path: '',

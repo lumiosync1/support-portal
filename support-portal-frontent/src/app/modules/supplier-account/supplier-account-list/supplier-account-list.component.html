@@ -1,0 +1,50 @@
+<div class="card mt-4">
+    <div class="card-header">
+        <div class="card-title">
+            <h5>Supplier Accounts</h5>
+        </div>
+        <div class="card-toolbar">
+            <a class="btn btn-primary" routerLink="/supplier-accounts/add">
+                <i class="bi bi-plus fs-3"></i> Add
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+      <ejs-grid #grid [dataSource]='data' 
+        allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [20, 50, 100] }' 
+        [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'account_id', direction: 'Descending' }] }"
+        [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
+        allowTextWrap='true'
+       >
+        <e-columns>
+            <e-column field='account_id' headerText='Account ID' ></e-column>
+            <e-column field='account_name' headerText='Account Name' width="300">
+                <ng-template #template let-data>
+                    <a [routerLink]="['/supplier-accounts', data.account_id]">{{data.account_name}}</a>
+                </ng-template>
+            </e-column>
+            <e-column field='max_orders_1h' headerText='Max Orders 1h' ></e-column>
+            <e-column field='max_orders_24h' headerText='Max Orders 24h' ></e-column>
+            <e-column field='allow_purchase' headerText='Allow Purchase' >
+                <ng-template #template let-data>
+                    @if(data.allow_purchase) {
+                        <i class="bi bi-check2-square text-success fs-3"></i>
+                    } @else {
+                        <i class="bi bi-x-square text-dark fs-3"></i>
+                    }
+                </ng-template>
+            </e-column>
+            <e-column field='enabled' headerText='Enabled' >
+                <ng-template #template let-data>
+                    @if(data.enabled) {
+                        <i class="bi bi-check2-square text-success fs-3"></i>
+                    } @else {
+                        <i class="bi bi-x-square text-dark fs-3"></i>
+                    }
+                </ng-template>
+            </e-column>
+            <e-column field='note' headerText='Note' width="200"></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
