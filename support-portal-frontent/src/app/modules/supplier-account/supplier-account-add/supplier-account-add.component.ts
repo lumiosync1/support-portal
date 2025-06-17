@@ -71,6 +71,7 @@ export class SupplierAccountAddComponent {
         MaxOrders24Hour: formValue.max_orders_24h
       })
     };
+    this.loadingService.showLoading();
     const sub = this.supplierAccountService.create(dto)
     .pipe(
       finalize(() => this.loadingService.hideLoading())

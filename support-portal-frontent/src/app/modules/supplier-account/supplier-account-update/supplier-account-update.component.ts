@@ -117,7 +117,10 @@ export class SupplierAccountUpdateComponent {
       note: formValue.note,
       account_id: this.id,
     };
-    this.supplierAccountService.update(dto)
+
+    this.loadingService.showLoading();
+    
+    const sub = this.supplierAccountService.update(dto)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
@@ -129,5 +132,6 @@ export class SupplierAccountUpdateComponent {
       this.toast.showSuccess('Supplier account added successfully');
       this.router.navigate(['/supplier-accounts']);
     });
+    this.subscriptions.push(sub);
   }
 }
