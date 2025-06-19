@@ -6,6 +6,8 @@
 
         public string seller_name { get; set; } = null;
 
+        public string email { get; set; }
+
         public bool active { get; set; }
 
         public string site { get; set; } = null;

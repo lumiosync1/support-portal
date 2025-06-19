@@ -34,10 +34,15 @@ namespace Lumio.SupportPortal.Services.Seller
                 throw new Exception("Seller not found");
             }
 
+            var mainUser = await dbContext.portal_users
+                .Where(e => e.seller_id == sellerId && e.user_name == seller.seller_name)
+                .FirstOrDefaultAsync();
+
             return new SellerDto()
             {
                 seller_id = seller.seller_id,
                 seller_name = seller.seller_name,
+                email = mainUser?.email ?? string.Empty,
                 active = seller.active,
                 site = seller.site,
                 created_at = seller.created_at,
