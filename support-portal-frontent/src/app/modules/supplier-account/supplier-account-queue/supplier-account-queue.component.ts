@@ -34,7 +34,7 @@ export class SupplierAccountQueueComponent {
 
   loadData() {
     this.loadingService.showLoading();
-    this.http.get(`http://services.lumiosync.com:5205/accounts/print`)
+    this.http.get(`https://amzk9f9c6e.execute-api.us-east-1.amazonaws.com/prod/supplier-accounts/queue`)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )

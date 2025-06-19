@@ -18,7 +18,7 @@
                 >
                 <e-columns>
                     <e-column field='account_id' headerText='ID' textAlign='Right' width="70"></e-column>
-                    <e-column field='account_name' headerText='Name'>
+                    <e-column field='account_name' headerText='Tài khoản'>
                         <ng-template #template let-data>
                             @if(data.allow_purchase) {
                                 <span class="text-dark">{{data.account_name}}</span>
@@ -36,15 +36,15 @@
                             }
                         </ng-template>
                     </e-column>
-                    <e-column field='current_task' headerText='Current Task' width="150"></e-column>
-                    <e-column field='available_at' headerText='Available At' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
-                    <e-column field='last_purchase_time' headerText='Last Purchase Time' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
-                    <e-column field='orders_24h' headerText='Orders' textAlign='Right' width="100">
+                    <e-column field='current_task' headerText='Việc đang làm' width="150"></e-column>
+                    <e-column field='available_at' headerText='Sẵn sàng lúc' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+                    <e-column field='last_purchase_time' headerText='Lần đặt trước' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+                    <e-column field='orders_24h' headerText='Hạn mức' textAlign='Right' width="100">
                         <ng-template #template let-data>
                             {{data.orders_24h.length}} / {{data.protection_settings.MaxOrders24Hour}}
                         </ng-template>
                     </e-column>
-                    <e-column field='on_hold_to' headerText='On Hold To' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
+                    <e-column field='on_hold_to' headerText='Tạm khóa đến' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
                     <e-column field='last_tracking_time' headerText='Last Tracking Time' format="dd/MM/yyyy HH:mm:ss" width="150"></e-column>
 
                     <e-column field='account_id' headerText='Action' width="70">
@@ -58,10 +58,10 @@
                                         <i class="bi bi-info-circle text-primary fs-3"></i> Detail
                                     </button>
                                     <button ngbDropdownItem (click)="markIdle(data.account_id)">
-                                        <i class="bi bi-shield-fill-check text-primary fs-3"></i> Mark Idle
+                                        <i class="bi bi-shield-fill-check text-primary fs-3"></i> Đánh dấu sẵn sàng
                                     </button>
                                     <button ngbDropdownItem (click)="hold(data.account_id)">
-                                        <i class="bi bi-hourglass-top text-primary fs-3"></i> Hold For 30 minutes
+                                        <i class="bi bi-hourglass-top text-primary fs-3"></i> Tạm khóa 30 phút
                                     </button>
                                     <button ngbDropdownItem (click)="resetLastTrackingTime(data.account_id)">
                                         <i class="bi bi-clock-history text-primary fs-3"></i> Reset Last Tracking Time
@@ -78,7 +78,7 @@
 
 <ng-template #detailModal let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+		<h4 class="modal-title" id="modal-basic-title">Profile detail</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
