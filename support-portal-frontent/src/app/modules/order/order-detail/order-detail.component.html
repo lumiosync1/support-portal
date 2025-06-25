@@ -25,7 +25,7 @@
                         <i class="bi bi-arrow-clockwise text-danger fs-3"></i> Return Order
                     </button>
                 }
-                @if (orderDetail.OrderStatus == OrderStatus.Error || orderDetail.OrderStatus == OrderStatus.Removed) {
+                @if (orderDetail.OrderStatus == OrderStatus.Error || orderDetail.OrderStatus == OrderStatus.Removed || orderDetail.OrderStatus == OrderStatus.Cancelled) {
                     <button ngbDropdownItem (click)="openPushToQueueModal()">
                         <i class="bi bi-cart2 text-primary fs-3"></i> Push to Queue
                     </button>

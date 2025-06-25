@@ -205,9 +205,9 @@ namespace Lumio.SupportPortal.Services.Order
                 throw new Exception("Order not found");
             }
 
-            if (order.order_status != OrderStatus.Error && order.order_status != OrderStatus.Removed)
+            if (order.order_status != OrderStatus.Error && order.order_status != OrderStatus.Removed && order.order_status != OrderStatus.Cancelled)
             {
-                throw new Exception("Order can only be pushed to queue if it is error or removed");
+                throw new Exception("Order can only be pushed to queue if it is error or removed or cancelled");
             }
 
             string settings = string.IsNullOrEmpty(order.settings) ? "{}" : order.settings;
