@@ -100,8 +100,19 @@ namespace Lumio.SupportPortal.Services.Seller
                 loadingFeePercentage = settingsObj.BalanceLoadingFeePercentage;
             }
 
-            // make sure correct data
-            dto.debit = false;
+            // check if ref_id exists
+            var tran = await dbContext.balance_transactions
+                .Where(e => e.tx_code == BalanceTransactionCodes.TOPUP 
+                    && e.ref_id == dto.ref_id 
+                    && e.seller_id == dto.seller_id)
+                .FirstOrDefaultAsync();
+            if (tran != null)
+            {
+                throw new Exception($"The topup with Ref. No. {dto.ref_id} already exists.");
+            }
+
+                // make sure correct data
+                dto.debit = false;
             dto.amount = Math.Abs(dto.amount);
             dto.tx_code = BalanceTransactionCodes.TOPUP;
             dto.created_by = authService.CurrentUser.UserName;
