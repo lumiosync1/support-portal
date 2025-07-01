@@ -26,13 +26,13 @@
                                 <span class="text-muted">{{data.account_name}}</span>
                             }
                             @if(data.limit24h) {
-                                <span class="badge badge-danger">24h</span>
+                                &nbsp;<span class="badge badge-danger">24h</span>
                             }
                             @if(data.limit1h) {
-                                <span class="badge badge-warning">1h</span>
+                                &nbsp;<span class="badge badge-warning">1h</span>
                             }
                             @if(!data.limit1h && !data.limit24h && data.allow_purchase) {
-                                <i class="bi bi-shield-fill-check text-success fs-3"></i>
+                                &nbsp;<i class="bi bi-shield-fill-check text-success fs-3"></i>
                             }
                         </ng-template>
                     </e-column>

@@ -105,7 +105,7 @@ export class SupplierAccountQueueComponent {
 
   reloadQueue() {
     this.loadingService.showLoading();
-    this.http.post(`http://services.lumiosync.com:5205/accounts/reload`, null)
+    this.http.post(`https://amzk9f9c6e.execute-api.us-east-1.amazonaws.com/prod/supplier-accounts/reload`, null)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
@@ -116,7 +116,7 @@ export class SupplierAccountQueueComponent {
 
   markIdle(account_id: number) {
     this.loadingService.showLoading();
-    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/idle`, null)
+    this.http.post(`https://amzk9f9c6e.execute-api.us-east-1.amazonaws.com/prod/supplier-accounts/${account_id}/idle`, null)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
@@ -129,7 +129,7 @@ export class SupplierAccountQueueComponent {
     this.loadingService.showLoading();
     const formData = new FormData();
     formData.append('duration', '30');
-    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/hold`, formData)
+    this.http.post(`https://amzk9f9c6e.execute-api.us-east-1.amazonaws.com/prod/supplier-accounts/${account_id}/hold`, formData)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
@@ -143,7 +143,7 @@ export class SupplierAccountQueueComponent {
     const formData = new FormData();
     // set last tracking time to 7 hours ago
     formData.append('time', new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString());
-    this.http.post(`http://services.lumiosync.com:5205/accounts/${account_id}/last-tracking-time`, formData)
+    this.http.post(`https://amzk9f9c6e.execute-api.us-east-1.amazonaws.com/prod/supplier-accounts/${account_id}/last-tracking-time`, formData)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
     )
