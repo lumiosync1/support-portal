@@ -25,6 +25,7 @@ export class SupplierAccountQueueComponent {
   @ViewChild('detailModal') detailModal: TemplateRef<any>;
 
   data: Object[] = [];
+  activeAccounts: number;
   selectedAccount: any;
 
   ngOnInit(): void {
@@ -99,6 +100,7 @@ export class SupplierAccountQueueComponent {
         }
       }
       this.data = accounts;
+      this.activeAccounts = accounts.filter((account: any) => account.allow_purchase).length;
       this.ref.detectChanges();
     });
   }

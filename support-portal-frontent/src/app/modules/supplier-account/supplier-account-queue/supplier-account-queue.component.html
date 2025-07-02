@@ -8,6 +8,7 @@
     </div>
     <div class="card-body">
         @if(data.length > 0) {
+            <p><strong>Số lượng tài khoản có thể mua hàng:</strong> {{activeAccounts}}</p>
             <ejs-grid #grid [dataSource]='data' 
                 allowPaging='true' [pageSettings]='{ pageSize: 200, pageSizes: [20, 200, 300] }' 
                 [allowSorting]='true' 
