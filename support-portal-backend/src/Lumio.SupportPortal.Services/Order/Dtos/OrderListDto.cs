@@ -18,6 +18,8 @@
 
         public string order_status { get; set; }
 
+        public string? supplier_account_name { get; set; }
 
+        public string? supplier_order_number { get; set; }
     }
 }

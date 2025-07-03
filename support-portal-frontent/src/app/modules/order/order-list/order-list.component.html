@@ -7,21 +7,22 @@
         allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
         [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
         [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
+        [frozenColumns]="2"
         allowTextWrap='true'
+        height="400" 
        >
         <e-columns>
-            <e-column field='order_id' headerText='ID' textAlign='Right' width="70"></e-column>
-            <e-column field='seller_name' headerText='Seller' ></e-column>
+            <e-column field='order_id' headerText='ID' textAlign='Right' width="80"></e-column>
             <e-column field='item_title' headerText='Item' width="300">
                 <ng-template #template let-data>
                     <a [routerLink]="['/orders', data.order_id]">{{data.item_title}}</a>
                 </ng-template>
             </e-column>
-            <e-column field='sale_date' headerText='Sale Date' format="MM/dd/yyyy" ></e-column>
-            <e-column field='created_at' headerText='Created Date' format="MM/dd/yyyy HH:mm" ></e-column>
-            <e-column field='quantity' headerText='Quantity' textAlign='Right' ></e-column>
-            <e-column field='market_total_price' headerText='Total Price' textAlign='Right' format="n2"></e-column>
-            <e-column field='order_status' headerText='Status' [filter]="{operators: [{ value: 'equal', text: 'Equal' }]}">
+            <e-column field='seller_name' headerText='Seller' width="150" ></e-column>
+            <e-column field='created_at' headerText='Created Date' format="MM/dd/yyyy HH:mm" width="150"></e-column>
+            <e-column field='quantity' headerText='Quantity' textAlign='Right' width="120"></e-column>
+            <e-column field='market_total_price' headerText='Total Price' textAlign='Right' format="n2" width="150"></e-column>
+            <e-column field='order_status' headerText='Status' [filter]="{operators: [{ value: 'equal', text: 'Equal' }]}" width="100">
                 <ng-template #template let-data>
                     <span class="badge" [class]="'status-' + data.order_status">
                         {{data.order_status}}
@@ -41,6 +42,8 @@
                     </select>
                 </ng-template>
             </e-column>
+            <e-column field='supplier_account_name' headerText='Supplier Account' width="200"></e-column>
+            <e-column field='supplier_order_number' headerText='Supplier Order #' width="200"></e-column>
         </e-columns>
       </ejs-grid>
     </div>
