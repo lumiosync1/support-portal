@@ -14,6 +14,7 @@ import { CancelOrderModalComponent } from '../_components/cancel-order-modal/can
 import { ReturnOrderModalComponent } from '../_components/return-order-modal/return-order-modal.component';
 import { OrderStatus } from '../_others/order-statuses';
 import { PushOrderToQueueModalComponent } from '../_components/push-order-to-queue-modal/push-order-to-queue-modal.component';
+import { ReprocessOrderModalComponent } from '../_components/reprocess-order-modal/reprocess-order-modal.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -105,6 +106,20 @@ export class OrderDetailComponent {
 
   openCancelOrderModal() {
     const modalRef = this.modalService.open(CancelOrderModalComponent);
+    modalRef.componentInstance.orderId = this.orderId;
+    modalRef.result.then(
+      (result) => {
+        if(result) {
+          this.loadData();
+        }
+      },
+      (reason) => {
+      },
+    );
+  }
+
+  openReprocessOrderModal() {
+    const modalRef = this.modalService.open(ReprocessOrderModalComponent);
     modalRef.componentInstance.orderId = this.orderId;
     modalRef.result.then(
       (result) => {

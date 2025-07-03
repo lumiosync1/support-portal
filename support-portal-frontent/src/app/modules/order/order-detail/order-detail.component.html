@@ -19,6 +19,10 @@
                     <button ngbDropdownItem (click)="openCancelOrderModal()">
                         <i class="bi bi-x-circle text-danger fs-3"></i> Cancel Order
                     </button>
+
+                    <button ngbDropdownItem (click)="openReprocessOrderModal()">
+                        <i class="bi bi-arrow-repeat text-danger fs-3"></i> Reprocess Order
+                    </button>
                 }
                 @if (orderDetail.OrderStatus == OrderStatus.Delivered) {
                     <button ngbDropdownItem (click)="openReturnOrderModal()">

@@ -169,6 +169,74 @@ namespace Lumio.SupportPortal.Services.Order
             }
         }
 
+        public async Task ReprocessOrderAsync(int orderId, string reason)
+        {
+            var order = await dbContext.om_orders
+                .Where(o => o.order_id == orderId)
+                .Include(o => o.purchase)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+
+            if (order.order_status != OrderStatus.Purchased && order.order_status != OrderStatus.Shipped)
+            {
+                throw new Exception("Order can only be reprocessed if it is purchased or shipped");
+            }
+
+            if (order.purchase != null)
+            {
+                // refund balance
+                BalanceTransactionCreateDto transaction = new()
+                {
+                    seller_id = order.seller_id,
+                    order_id = order.order_id,
+                    amount = Math.Abs(order.purchase.supplier_total_price - order.purchase.supplier_shipping_fee), // make sure the amount is positive
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PURCHASE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund for cancelled order"
+                };
+                await balanceManager.CreateTransactionAsync(transaction);
+
+                if (order.purchase.order_fee > 0)
+                {
+                    // refund order fee
+                    BalanceTransactionCreateDto orderFeeTransaction = new()
+                    {
+                        seller_id = order.seller_id,
+                        order_id = order.order_id,
+                        amount = Math.Abs(order.purchase.order_fee),
+                        debit = false,
+                        tx_code = BalanceTransactionCodes.ORDER_FEE,
+                        created_by = authService.CurrentUser.UserName,
+                        note = "Refund for order fee"
+                    };
+                    await balanceManager.CreateTransactionAsync(orderFeeTransaction);
+                }
+
+                if (order.purchase.processing_fee > 0)
+                {
+                    // refund processing fee
+                    BalanceTransactionCreateDto processingFeeTransaction = new()
+                    {
+                        seller_id = order.seller_id,
+                        order_id = order.order_id,
+                        amount = Math.Abs(order.purchase.processing_fee),
+                        debit = false,
+                        tx_code = BalanceTransactionCodes.PROCESSING_FEE,
+                        created_by = authService.CurrentUser.UserName,
+                        note = "Refund for processing fee"
+                    };
+                    await balanceManager.CreateTransactionAsync(processingFeeTransaction);
+                }
+            }
+            // reset purchase and tracking information and push order back to pending status
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Pending, reason, authService.CurrentUser.UserName);
+        }
+
         public async Task ReturnOrderAsync(int orderId, string reason, bool refundBalance)
         {
             var order = await dbContext.om_orders

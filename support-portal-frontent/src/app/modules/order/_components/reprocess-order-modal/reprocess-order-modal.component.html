@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title" >Reprocess Order #{{orderId}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-info d-flex align-items-center p-5">
+        <!--begin::Icon-->
+        <i class="bi bi-info-circle-fill fs-2hx text-info me-4"></i>
+        <!--end::Icon-->
+
+        <!--begin::Wrapper-->
+        <div class="d-flex flex-column">
+            <!--begin::Title-->
+            <h4 class="mb-1">Notice</h4>
+            <!--end::Title-->
+
+            <!--begin::Content-->
+            <p>
+                This action is for order that has been purchased but cancelled on Amazon and need to reprocess. It will:
+            </p>
+            <ul>
+                <li>Clear existing purchasing information</li>
+                <li>Refund the order amount (including fees)</li>
+                <li>Push the order to queue</li>
+            </ul>
+            <strong>Are you sure you want to reprocess this order?</strong>
+            <!--end::Content-->
+        </div>
+        <!--end::Wrapper-->
+    </div>
+
+    <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtReason" class="form-label required">Reason</label>
+                <input type="text" id="txtReason" name="Reason" class="form-control"
+                    [class.is-valid]="formGroup.controls['Reason'].valid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)"
+                    [class.is-invalid]="formGroup.controls['Reason'].invalid && (formGroup.controls['Reason'].dirty || formGroup.controls['Reason'].touched)"
+                    formControlName="Reason"/>
+                <div *ngIf="formGroup.controls['Reason'].hasError('required')" class="invalid-feedback">This field is required</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+    <button class="btn btn-primary" [disabled]="!formGroup || !formGroup.valid" (click)="reprocessOrder()">
+        <i class="bi bi-arrow-repeat fs-3"></i> Reprocess Order
+    </button>
+</div>

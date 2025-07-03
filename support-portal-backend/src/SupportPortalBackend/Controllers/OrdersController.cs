@@ -83,6 +83,28 @@ namespace Lumio.SupportPortal.Api.Controllers
             }
         }
 
+        [Route("{orderId}/reprocess")]
+        [HttpPost]
+        public async Task<BaseResponse<string>> ReprocessOrderAsync(int orderId, [FromForm] string reason)
+        {
+            BaseResponse<string> response = new BaseResponse<string>();
+            try
+            {
+                await orderService.ReprocessOrderAsync(orderId, reason);
+                response.Data = "Success";
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = ResponseStatus.Error;
+                response.Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                response.Data = null;
+                response.AdditionalInfo = ex.StackTrace;
+                return response;
+            }
+        }
+
         [Route("{orderId}/return")]
         [HttpPost]
         public async Task<BaseResponse<string>> ReturnOrderAsync(int orderId, [FromForm] string reason, [FromForm] bool refundBalance)

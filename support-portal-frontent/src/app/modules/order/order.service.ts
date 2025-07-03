@@ -35,6 +35,13 @@ export class OrderService {
     return this.http.post<BaseResponse<string>>(url, form);
   }
 
+  reprocessOrder(orderId: number, reason: string): Observable<BaseResponse<string>> {
+    let url: string = `${environment.backendUrl}/api/orders/${orderId}/reprocess`;
+    const form: FormData = new FormData();
+    form.append('reason', reason);
+    return this.http.post<BaseResponse<string>>(url, form);
+  }
+
   returnOrder(orderId: number, reason: string, refundBalance: boolean): Observable<BaseResponse<string>> {
     let url: string = `${environment.backendUrl}/api/orders/${orderId}/return`;
     const form: FormData = new FormData();

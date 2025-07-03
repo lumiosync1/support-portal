@@ -14,6 +14,8 @@ namespace Lumio.SupportPortal.Services.Order
 
         public Task CancelOrderAsync(int orderId, string reason, bool refundBalance);
 
+        public Task ReprocessOrderAsync(int orderId, string reason);
+
         public Task ReturnOrderAsync(int orderId, string reason, bool refundBalance);
 
         public Task PushOrderToQueueAsync(PushOrderToQueueDto dto);
