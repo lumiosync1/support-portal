@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 import { ResponseStatus } from 'src/app/modules/shared/models/base-response.model';
 import { BulkUpdateStatusDto } from '../_models/BulkUpdateStatusDto';
 import { NgIf } from '@angular/common';
+import { OrderStatus } from '../_others/order-statuses';
 
 @Component({
   selector: 'app-bulk-update-order-status',
@@ -29,6 +30,7 @@ export class BulkUpdateOrderStatusComponent {
   private subscriptions: Subscription[] = [];
 
   formGroup: FormGroup;
+  toPending: boolean = false;
 
   ngOnInit(): void {
     this.page.updateTitle('Bulk Update Order Status');
@@ -36,7 +38,8 @@ export class BulkUpdateOrderStatusComponent {
       NewStatus: ['', [Validators.required]],
       Reason: ['', [Validators.required]],
       OrderIds: ['', [Validators.required]],
-    })
+    });
+    this.formGroup.get('NewStatus')?.valueChanges.subscribe(value => this.onNewStatusChange(value));
   }
 
   ngOnDestroy() {
@@ -72,5 +75,13 @@ export class BulkUpdateOrderStatusComponent {
     });
 
     this.subscriptions.push(sub);
+  }
+
+  onNewStatusChange(value: string) {
+    if(value === OrderStatus.Pending) {
+      this.toPending = true;
+    } else {
+      this.toPending = false;
+    }
   }
 }

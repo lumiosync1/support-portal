@@ -18,6 +18,7 @@
               <option value="removed">Removed</option>
             </select>
             <div *ngIf="formGroup.controls['NewStatus'].hasError('required')" class="invalid-feedback">This field is required</div>
+            <div *ngIf="toPending" class="text-danger">Don't use this feature to move Purchased/Shipped/Cancelled orders to queue because it requires more actions like refunding...</div>
           </div>
         </div>
         <div class="col-md-6">
