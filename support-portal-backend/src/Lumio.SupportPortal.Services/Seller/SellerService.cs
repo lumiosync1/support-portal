@@ -5,6 +5,7 @@ using Lumio.Domain.Entities;
 using Lumio.Domain.Seller;
 using Lumio.SupportPortal.Services.Auth;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace Lumio.SupportPortal.Services.Seller
@@ -14,11 +15,13 @@ namespace Lumio.SupportPortal.Services.Seller
         MainDbContext dbContext;
         IAuthService authService;
         BalanceManager balanceManager;
-        public SellerService(MainDbContext dbContext, IAuthService authService, BalanceManager balanceManager)
+        IConfiguration configuration;
+        public SellerService(MainDbContext dbContext, IAuthService authService, BalanceManager balanceManager, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.authService = authService;
             this.balanceManager = balanceManager;
+            this.configuration = configuration;
         }
 
         public IQueryable<seller> GetSellerQueryable()
@@ -111,8 +114,8 @@ namespace Lumio.SupportPortal.Services.Seller
                 throw new Exception($"The topup with Ref. No. {dto.ref_id} already exists.");
             }
 
-                // make sure correct data
-                dto.debit = false;
+            // make sure correct data
+            dto.debit = false;
             dto.amount = Math.Abs(dto.amount);
             dto.tx_code = BalanceTransactionCodes.TOPUP;
             dto.created_by = authService.CurrentUser.UserName;
@@ -148,6 +151,14 @@ namespace Lumio.SupportPortal.Services.Seller
                 await dbTransaction.RollbackAsync();
                 throw e;
             }
+
+            // send alert to discord
+            var seller = await dbContext.sellers.FindAsync(dto.seller_id);
+            using HttpClient client = new HttpClient();
+            await client.PostAsync(configuration["BalanceTopupAlertUrl"], new StringContent(JsonSerializer.Serialize(new
+            {
+                content = $"Khách hàng {seller.seller_name} vừa nạp ${dto.amount}"
+            }), System.Text.Encoding.UTF8, "application/json"));
         }
 
         public async Task WithdrawBalanceAsync(BalanceTransactionCreateDto dto)
