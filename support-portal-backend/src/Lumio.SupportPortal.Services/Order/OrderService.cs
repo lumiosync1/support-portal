@@ -68,6 +68,19 @@ namespace Lumio.SupportPortal.Services.Order
 
             var dto = order.ToOrderDetailDto();
 
+            dto.SellerName = (await dbContext.sellers
+                .Where(s => s.seller_id == order.seller_id)
+                .Select(s => s.seller_name)
+                .FirstOrDefaultAsync()) ?? string.Empty;
+
+            if(order.store_id.HasValue)
+            {
+                dto.StoreName = (await dbContext.stores
+                .Where(s => s.store_id == order.store_id)
+                .Select(s => s.store_name)
+                .FirstOrDefaultAsync()) ?? string.Empty;
+            }
+
             dto.Purchase = await (from p in dbContext.om_order_purchases
                                   join a in dbContext.supplier_accounts on p.supplier_account_id equals a.account_id
                                   where p.order_id == orderId
