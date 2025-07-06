@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { FilterService, GridComponent, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
+import { FilterService, FreezeService, GridComponent, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
 import { DataManager, ODataV4Adaptor } from '@syncfusion/ej2-data';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../auth';
@@ -15,7 +15,7 @@ import { NgClass } from '@angular/common';
     GridModule,
     RouterLink,
   ],
-  providers: [SortService, FilterService, PageService],
+  providers: [SortService, FilterService, PageService, FreezeService],
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.scss'
 })
