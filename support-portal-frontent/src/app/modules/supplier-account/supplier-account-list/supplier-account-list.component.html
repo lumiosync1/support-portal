@@ -11,16 +11,19 @@
     </div>
     <div class="card-body">
       <ejs-grid #grid [dataSource]='data' 
-        allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [20, 50, 100] }' 
+        allowPaging='true' [pageSettings]='{ pageSize: 100, pageSizes: [20, 50, 100] }' 
         [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'account_id', direction: 'Descending' }] }"
         [allowFiltering]='true' [filterSettings]='{type: "Menu"}'
         allowTextWrap='true'
        >
         <e-columns>
             <e-column field='account_id' headerText='Account ID' ></e-column>
-            <e-column field='account_name' headerText='Account Name' width="300">
+            <e-column field='account_name' headerText='Account Name' width="300" >
                 <ng-template #template let-data>
                     <a [routerLink]="['/supplier-accounts', data.account_id]">{{data.account_name}}</a>
+                </ng-template>
+                <ng-template #filterTemplate let-data>
+                    <input type="text" class="e-input" [value]="data.account_name??''" />
                 </ng-template>
             </e-column>
             <e-column field='max_orders_1h' headerText='Max Orders 1h' ></e-column>
