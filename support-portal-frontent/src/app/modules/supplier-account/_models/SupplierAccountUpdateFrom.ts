@@ -9,5 +9,8 @@ export interface SupplierAccountUpdateForm {
     enabled: boolean;
     note: string | null;
     max_orders_1h: number;
+    max_orders_2h: number;
+    max_orders_4h: number;
+    max_orders_12h: number;
     max_orders_24h: number;
 }

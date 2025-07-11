@@ -71,6 +71,9 @@ export class SupplierAccountUpdateComponent {
         enabled: res.Data.SupplierAccount.enabled,
         note: res.Data.SupplierAccount.note,
         max_orders_1h: setttings.MaxOrders1Hour,
+        max_orders_2h: setttings.MaxOrders2Hour,
+        max_orders_4h: setttings.MaxOrders4Hour,
+        max_orders_12h: setttings.MaxOrders12Hour,
         max_orders_24h: setttings.MaxOrders24Hour,
       };
 
@@ -86,8 +89,11 @@ export class SupplierAccountUpdateComponent {
       ml_profile: [this.account.ml_profile, [Validators.required]],
       supplier: [this.account.supplier, [Validators.required]],
       site: [this.account.site, [Validators.required]],
-      max_orders_1h: [this.account.max_orders_1h, [Validators.required]],
-      max_orders_24h: [this.account.max_orders_24h, [Validators.required]],
+      max_orders_1h: [this.account.max_orders_1h],
+      max_orders_2h: [this.account.max_orders_2h],
+      max_orders_4h: [this.account.max_orders_4h],
+      max_orders_12h: [this.account.max_orders_12h],
+      max_orders_24h: [this.account.max_orders_24h, Validators.required],
       allow_purchase: [this.account.allow_purchase, [Validators.required]],
       enabled: [this.account.enabled, [Validators.required]],
       note: [this.account.note],
@@ -110,6 +116,9 @@ export class SupplierAccountUpdateComponent {
       site: formValue.site,
       protection_settings: JSON.stringify({
         MaxOrders1Hour: formValue.max_orders_1h,
+        MaxOrders2Hour: formValue.max_orders_2h,
+        MaxOrders4Hour: formValue.max_orders_4h,
+        MaxOrders12Hour: formValue.max_orders_12h,
         MaxOrders24Hour: formValue.max_orders_24h
       }),
       allow_purchase: formValue.allow_purchase,
