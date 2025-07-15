@@ -49,6 +49,7 @@ export class SupplierAccountUpdateComponent {
   }
 
   loadData() {
+    this.loadingService.showLoading();
     const sub = this.supplierAccountService.initDataUpdate(this.id)
     .pipe(
       finalize(() => this.loadingService.hideLoading())
