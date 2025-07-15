@@ -9,6 +9,7 @@
     <div class="card-body">
         @if(data.length > 0) {
             <p><strong>Số lượng tài khoản có thể mua hàng:</strong> {{activeAccounts}}</p>
+            <p><strong>Số lượng đơn hàng tối đa trong 24h:</strong> {{maxOrders24h}}</p>
             <ejs-grid #grid [dataSource]='data' 
                 allowPaging='true' [pageSettings]='{ pageSize: 200, pageSizes: [20, 200, 300] }' 
                 [allowSorting]='true' 
@@ -29,10 +30,19 @@
                             @if(data.limit24h) {
                                 &nbsp;<span class="badge badge-danger">24h</span>
                             }
+                            @if(data.limit12h) {
+                                &nbsp;<span class="badge badge-warning">12h</span>
+                            }
+                            @if(data.limit4h) {
+                                &nbsp;<span class="badge badge-warning">4h</span>
+                            }
+                            @if(data.limit2h) {
+                                &nbsp;<span class="badge badge-warning">2h</span>
+                            }
                             @if(data.limit1h) {
                                 &nbsp;<span class="badge badge-warning">1h</span>
                             }
-                            @if(!data.limit1h && !data.limit24h && data.allow_purchase) {
+                            @if(!data.limit1h && !data.limit2h && !data.limit4h && !data.limit12h && !data.limit24h && data.allow_purchase) {
                                 &nbsp;<i class="bi bi-shield-fill-check text-success fs-3"></i>
                             }
                         </ng-template>
