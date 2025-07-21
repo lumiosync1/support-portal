@@ -20,9 +20,6 @@ namespace SupportPortalBackend
     {
         public static void Main(string[] args)
         {
-            // Enable legacy timestamp behavior for Npgsql, this will allow to use DateTime for timestamptz
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.

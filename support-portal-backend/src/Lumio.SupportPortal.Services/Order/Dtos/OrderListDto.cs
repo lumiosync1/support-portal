@@ -6,7 +6,7 @@
 
         public string sale_date { get; set; }
 
-        public DateTime created_at { get; set; }
+        public DateTimeOffset created_at { get; set; }
 
         public string seller_name { get; set; }
 

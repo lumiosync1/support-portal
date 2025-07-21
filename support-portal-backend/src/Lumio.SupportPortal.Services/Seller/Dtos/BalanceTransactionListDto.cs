@@ -6,7 +6,7 @@
 
         public int seller_id { get; set; }
 
-        public DateTime created_at { get; set; }
+        public DateTimeOffset created_at { get; set; }
 
         public string tx_code { get; set; } = null!;
 
