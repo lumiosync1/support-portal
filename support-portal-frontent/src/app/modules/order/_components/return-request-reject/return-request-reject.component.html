@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h4 class="modal-title" >Reject Return Request #{{orderId}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtNote" class="form-label required">Note</label>
+                <input type="text" id="txtNote" name="note" class="form-control"
+                    [class.is-valid]="formGroup.controls['note'].valid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
+                    [class.is-invalid]="formGroup.controls['note'].invalid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
+                    formControlName="note"/>
+                <div *ngIf="formGroup.controls['note'].hasError('required')" class="invalid-feedback">This field is required</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+    <button class="btn btn-danger" [disabled]="!formGroup || !formGroup.valid" (click)="onSubmit()">
+        <i class="bi bi-x-circle fs-3"></i> Reject
+    </button>
+</div>

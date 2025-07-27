@@ -73,7 +73,7 @@ namespace Lumio.SupportPortal.Services.Order
                 .Select(s => s.seller_name)
                 .FirstOrDefaultAsync()) ?? string.Empty;
 
-            if(order.store_id.HasValue)
+            if (order.store_id.HasValue)
             {
                 dto.StoreName = (await dbContext.stores
                 .Where(s => s.store_id == order.store_id)
@@ -330,7 +330,7 @@ namespace Lumio.SupportPortal.Services.Order
                 );
 
             List<om_order_status_history> histories = new List<om_order_status_history>();
-            
+
             foreach (var id in dto.OrderIds)
             {
                 histories.Add(new om_order_status_history
@@ -348,6 +348,218 @@ namespace Lumio.SupportPortal.Services.Order
                 await dbContext
                     .BulkInsertAsync(histories);
             }
+        }
+
+        public IQueryable<CancelRequestListDto> GetCancelRequestQueryable()
+        {
+            string sql = $@"SELECT c.order_id
+	                            ,s.seller_name
+	                            ,o.item_title
+	                            ,c.created_at
+	                            ,c.status
+	                            ,c.note
+                            FROM om_cancel_requests c
+                            JOIN om_orders o ON c.order_id = o.order_id
+                            JOIN sellers s ON c.seller_id = s.seller_id
+                            WHERE TRUE
+                        ";
+
+            return dbContext.Database.SqlQueryRaw<CancelRequestListDto>(sql);
+        }
+
+        public IQueryable<ReturnRequestListDto> GetReturnRequestQueryable()
+        {
+            string sql = $@"SELECT c.order_id
+	                            ,s.seller_name
+	                            ,o.item_title
+	                            ,c.created_at
+	                            ,c.status
+	                            ,c.note
+                            FROM om_return_requests c
+                            JOIN om_orders o ON c.order_id = o.order_id
+                            JOIN sellers s ON c.seller_id = s.seller_id
+                            WHERE TRUE
+                        ";
+
+            return dbContext.Database.SqlQueryRaw<ReturnRequestListDto>(sql);
+        }
+
+        public async Task ApproveCancelRequestAsync(CancelRequestApproveDto dto)
+        {
+            var request = await dbContext.om_cancel_requests
+                .Where(c => c.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            if (request == null)
+            {
+                throw new Exception("Cancel request not found");
+            }
+            if (request.status != "pending")
+            {
+                throw new Exception("Cancel request can only be approved if it is pending");
+            }
+
+            // change request status
+            request.status = "approved";
+            request.note = dto.note;
+            request.reviewed_by = authService.CurrentUser.UserName;
+            request.reviewed_at = DateTime.UtcNow;
+            dbContext.om_cancel_requests.Update(request);
+
+            // change order status
+            var order = await dbContext.om_orders
+                .Where(o => o.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            order.order_status = OrderStatus.Cancelled;
+
+            await dbContext.SaveChangesAsync();
+
+            om_order_purchase purchase = null;
+            if(dto.refund_order_price || dto.refund_processing_fee)
+            {
+                purchase = await dbContext.om_order_purchases
+                    .Where(o => o.order_id == dto.order_id)
+                    .FirstAsync();
+            }
+
+            // refund order price
+            if (dto.refund_order_price)
+            {
+                await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                {
+                    seller_id = request.seller_id,
+                    order_id = request.order_id,
+                    amount = Math.Abs(purchase.supplier_total_price),
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PURCHASE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund for cancelled order"
+                });
+            }
+
+            // refund processing fee
+            if (dto.refund_processing_fee)
+            {
+                await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                {
+                    seller_id = request.seller_id,
+                    order_id = request.order_id,
+                    amount = Math.Abs(purchase.processing_fee),
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PROCESSING_FEE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund processing fee of cancelled order"
+                });
+            }
+        }
+
+        public async Task RejectCancelRequestAsync(CancelRequestRejectDto dto)
+        {
+            var request = await dbContext.om_cancel_requests
+                .Where(c => c.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            if (request == null)
+            {
+                throw new Exception("Cancel request not found");
+            }
+            if (request.status != "pending")
+            {
+                throw new Exception("Cancel request can only be rejected if it is pending");
+            }
+            request.status = "rejected";
+            request.note = dto.note;
+            request.reviewed_by = authService.CurrentUser.UserName;
+            request.reviewed_at = DateTime.UtcNow;
+            dbContext.om_cancel_requests.Update(request);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task ApproveReturnRequestAsync(ReturnRequestApproveDto dto)
+        {
+            var request = await dbContext.om_return_requests
+                .Where(c => c.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            if (request == null)
+            {
+                throw new Exception("Return request not found");
+            }
+            if (request.status != "pending")
+            {
+                throw new Exception("Return request can only be approved if it is pending");
+            }
+
+            // change request status
+            request.status = "approved";
+            request.note = dto.note;
+            request.reviewed_by = authService.CurrentUser.UserName;
+            request.reviewed_at = DateTime.UtcNow;
+            dbContext.om_return_requests.Update(request);
+            
+            // change order status
+            var order = await dbContext.om_orders
+                .Where(o => o.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            order.order_status = OrderStatus.Returned;
+
+            await dbContext.SaveChangesAsync();
+
+            om_order_purchase purchase = null;
+            if (dto.refund_order_price || dto.refund_processing_fee)
+            {
+                purchase = await dbContext.om_order_purchases
+                    .Where(o => o.order_id == dto.order_id)
+                    .FirstAsync();
+            }
+
+            // refund order price
+            if (dto.refund_order_price)
+            {
+                await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                {
+                    seller_id = request.seller_id,
+                    order_id = request.order_id,
+                    amount = Math.Abs(purchase.supplier_total_price),
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PURCHASE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund for returned order"
+                });
+            }
+
+            // refund processing fee
+            if (dto.refund_processing_fee)
+            {
+                await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                {
+                    seller_id = request.seller_id,
+                    order_id = request.order_id,
+                    amount = Math.Abs(purchase.processing_fee),
+                    debit = false,
+                    tx_code = BalanceTransactionCodes.PROCESSING_FEE,
+                    created_by = authService.CurrentUser.UserName,
+                    note = "Refund processing fee of returned order"
+                });
+            }
+        }
+
+        public async Task RejectReturnRequestAsync(ReturnRequestRejectDto dto)
+        {
+            var request = await dbContext.om_return_requests
+                .Where(c => c.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            if (request == null)
+            {
+                throw new Exception("Return request not found");
+            }
+            if (request.status != "pending")
+            {
+                throw new Exception("Return request can only be rejected if it is pending");
+            }
+            request.status = "rejected";
+            request.note = dto.note;
+            request.reviewed_by = authService.CurrentUser.UserName;
+            request.reviewed_at = DateTime.UtcNow;
+            dbContext.om_return_requests.Update(request);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

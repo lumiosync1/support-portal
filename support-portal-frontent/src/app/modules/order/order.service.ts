@@ -6,6 +6,10 @@ import { OrderDetailDto } from './_models/OrderDetailDto';
 import { BaseResponse } from '../shared/models/base-response.model';
 import { PushOrderToQueueDto } from './_models/PushOrderToQueueDto';
 import { BulkUpdateStatusDto } from './_models/BulkUpdateStatusDto';
+import { ReturnRequestRejectDto } from './_models/ReturnRequestRejectDto';
+import { CancelRequestApproveDto } from './_models/CancelRequestApproveDto';
+import { CancelRequestRejectDto } from './_models/CancelRequestRejectDto';
+import { ReturnRequestApproveDto } from './_models/ReturnRequestApproveDto';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +60,21 @@ export class OrderService {
 
   bulkUpdateOrderStatus(dto: BulkUpdateStatusDto): Observable<BaseResponse<string>> {
     return this.http.put<BaseResponse<string>>(`${environment.backendUrl}/api/orders/status-bulk`, dto);
+  }
+
+  approveCancelRequest(dto: CancelRequestApproveDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/cancelrequests/approve`, dto);
+  }
+
+  rejectCancelRequest(dto: CancelRequestRejectDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/cancelrequests/reject`, dto);
+  }
+
+  approveReturnRequest(dto: ReturnRequestApproveDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/returnrequests/approve`, dto);
+  }
+
+  rejectReturnRequest(dto: ReturnRequestRejectDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/returnrequests/reject`, dto);
   }
 }

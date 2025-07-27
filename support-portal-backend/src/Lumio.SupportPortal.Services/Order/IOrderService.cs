@@ -21,5 +21,17 @@ namespace Lumio.SupportPortal.Services.Order
         public Task PushOrderToQueueAsync(PushOrderToQueueDto dto);
 
         public Task BulkUpdateStatusAsync(BulkUpdateStatusDto dto);
+
+        public IQueryable<CancelRequestListDto> GetCancelRequestQueryable();
+
+        public IQueryable<ReturnRequestListDto> GetReturnRequestQueryable();
+
+        public Task ApproveCancelRequestAsync(CancelRequestApproveDto dto);
+
+        public Task RejectCancelRequestAsync(CancelRequestRejectDto dto);
+
+        public Task ApproveReturnRequestAsync(ReturnRequestApproveDto dto);
+
+        public Task RejectReturnRequestAsync(ReturnRequestRejectDto dto);
     }
 }

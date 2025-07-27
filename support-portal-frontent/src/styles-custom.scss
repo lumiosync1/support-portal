@@ -12,51 +12,88 @@
 .status-pending {
     background-color: #F6C000;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-processing {
     background-color: #61c9ff;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-inprogress {
     background-color: #61c9ff;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-purchased {
     background-color: #56fdff;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-shipped {
     background-color: #2a53ff;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-delivered {
     background-color: #00ff11;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-cancelled {
     background-color: #7d7272;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-error {
     background-color: #ff2323;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-returned {
     background-color: #e654ff;
     color: white;
+    text-transform: capitalize;
 }
 
 .status-removed {
     background-color: #0f0f0f;
     color: white;
+}
+
+.status-rejected {
+    background-color: #EF4444;
+    color: white;
+    text-transform: capitalize;
+}
+
+.bg-rejected {
+    background-color: #EF4444 !important;
+}
+
+.text-rejected {
+    color: #EF4444 !important;
+}
+
+.status-approved {
+    background-color: #0bb74a;
+    color: white;
+    text-transform: capitalize;
+}
+
+.bg-approved {
+    background-color: #0bb74a !important;
+}
+
+.text-approved {
+    color: #0bb74a !important;
 }
 
 // remove caret from ngb dropdown, should be put in toggle button

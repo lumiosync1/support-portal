@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <h4 class="modal-title" >Approve Cancel Request #{{orderId}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-info d-flex align-items-center p-5">
+        <i class="bi bi-info-circle-fill fs-2hx text-info me-4"></i>
+        <div class="d-flex flex-column">
+            <!-- <h4 class="mb-1 text-dark">This is an alert</h4> -->
+            <p>
+                This action will:
+            </p>
+            <ul>
+                <li>Change the status of the cancel request to <strong>Approved</strong></li>
+                <li>Change the status of the order to <strong>Cancelled</strong></li>
+                <li>Select checkboxes below if you want to refund order price and processing fee</li>
+            </ul>
+            <strong>Are you sure you want to approve this cancel request?</strong>
+        </div>
+    </div>
+    
+    <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbRefundOrderPrice" formControlName="refund_order_price" />
+                    <label class="form-check-label" for="chbRefundOrderPrice">
+                        Refund Order Price
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbRefundProcessingFee" formControlName="refund_processing_fee" />
+                    <label class="form-check-label" for="chbRefundProcessingFee">
+                        Refund Processing Fee (and Order Fee)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="txtNote" class="form-label ">Note</label>
+                <input type="text" id="txtNote" name="note" class="form-control"
+                    [class.is-valid]="formGroup.controls['note'].valid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
+                    [class.is-invalid]="formGroup.controls['note'].invalid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
+                    formControlName="note"/>
+                <div *ngIf="formGroup.controls['note'].hasError('required')" class="invalid-feedback">This field is required</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+    <button class="btn btn-success" [disabled]="!formGroup || !formGroup.valid" (click)="onSubmit()">
+        <i class="bi bi-check-circle fs-3"></i> Approve
+    </button>
+</div>

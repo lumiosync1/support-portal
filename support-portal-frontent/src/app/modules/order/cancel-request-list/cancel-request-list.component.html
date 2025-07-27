@@ -1,0 +1,47 @@
+<h1>Cancel Requests</h1>
+
+<div class="card mt-4">
+    
+    <div class="card-body">
+        <div class="mt-12">
+            <ejs-grid #grid [dataSource]='data'
+                allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
+                [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
+                [allowFiltering]='false' 
+                allowTextWrap='true'
+                >
+                    <e-columns>
+                        <e-column field='order_id' headerText='Order ID' textAlign='Right' width="100"></e-column>
+                        <e-column field='seller_name' headerText='Seller' type="String" width="200"></e-column>
+                        <e-column field='item_title' headerText='Item' width="300">
+                            <ng-template #template let-data>
+                                <a [routerLink]="['/orders', data.order_id]" target="_blank">{{data.item_title}}</a>
+                            </ng-template>
+                        </e-column>
+                        <e-column field='created_at' headerText='Requested Date' format="MM/dd/yyyy HH:mm" width="120" ></e-column>
+                        <e-column field='status' headerText='Status' width="80">
+                            <ng-template #template let-data>
+                                <span class="badge" [class]="'status-' + data.status">
+                                    {{data.status}}
+                                </span>
+                            </ng-template>
+                        </e-column>
+                        <e-column field='note' headerText='Note' type="String" width="200"></e-column>
+                        <e-column field='order_id' headerText='Action' width="110">
+                            <ng-template #template let-data>
+                                @if(data.status == 'pending') {
+                                    <button class="btn btn-light-success btn-icon me-2" title="Approve" (click)="showApproveModal(data.order_id)">
+                                        <i class="bi bi-check fs-1"></i>
+                                    </button>
+                                    <button class="btn btn-light-danger btn-icon" title="Reject" (click)="showRejectModal(data.order_id)">
+                                        <i class="bi bi-x fs-1"></i>
+                                    </button>
+                                }
+                            </ng-template>
+                        </e-column>
+                    </e-columns>
+            </ejs-grid>
+        </div>
+        
+    </div>
+  </div>
