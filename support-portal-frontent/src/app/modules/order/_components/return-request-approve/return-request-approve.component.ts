@@ -32,7 +32,8 @@ fb = inject(FormBuilder);
       order_id: [this.orderId, Validators.required],
       note: [''],
       refund_order_price: [false, Validators.required],
-      refund_processing_fee: [false, Validators.required]
+      refund_processing_fee: [false, Validators.required],
+      return_label_url: ['', Validators.required],
     });
   }
 

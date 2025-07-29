@@ -489,6 +489,7 @@ namespace Lumio.SupportPortal.Services.Order
 
             // change request status
             request.status = "approved";
+            request.return_label_url = dto.return_label_url;
             request.note = dto.note;
             request.reviewed_by = authService.CurrentUser.UserName;
             request.reviewed_at = DateTime.UtcNow;

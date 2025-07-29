@@ -42,6 +42,16 @@
         </div>
         <div class="row mb-4">
             <div class="col-12">
+                <label for="txtReturnLabelUrl" class="form-label required">Return Label URL</label>
+                <input type="text" id="txtReturnLabelUrl" name="return_label_url" class="form-control"
+                    [class.is-valid]="formGroup.controls['return_label_url'].valid && (formGroup.controls['return_label_url'].dirty || formGroup.controls['return_label_url'].touched)"
+                    [class.is-invalid]="formGroup.controls['return_label_url'].invalid && (formGroup.controls['return_label_url'].dirty || formGroup.controls['return_label_url'].touched)"
+                    formControlName="return_label_url"/>
+                <div *ngIf="formGroup.controls['return_label_url'].hasError('required')" class="invalid-feedback">This field is required</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
                 <label for="txtNote" class="form-label ">Note</label>
                 <input type="text" id="txtNote" name="note" class="form-control"
                     [class.is-valid]="formGroup.controls['note'].valid && (formGroup.controls['note'].dirty || formGroup.controls['note'].touched)"
