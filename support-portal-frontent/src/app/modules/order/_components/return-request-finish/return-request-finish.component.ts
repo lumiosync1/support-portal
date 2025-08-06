@@ -31,7 +31,7 @@ fb = inject(FormBuilder);
     this.formGroup = this.fb.group({
       order_id: [this.order.order_id, Validators.required],
       note: [this.order.note],
-      refund_order_price: [false, Validators.required],
+      refund_order_price: [true, Validators.required],
       refund_processing_fee: [false, Validators.required],
     });
   }
