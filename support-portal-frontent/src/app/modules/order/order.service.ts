@@ -10,6 +10,7 @@ import { ReturnRequestRejectDto } from './_models/ReturnRequestRejectDto';
 import { CancelRequestApproveDto } from './_models/CancelRequestApproveDto';
 import { CancelRequestRejectDto } from './_models/CancelRequestRejectDto';
 import { ReturnRequestApproveDto } from './_models/ReturnRequestApproveDto';
+import { ReturnRequestFinishDto } from './_models/ReturnRequestFinishDto';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,10 @@ export class OrderService {
 
   approveReturnRequest(dto: ReturnRequestApproveDto): Observable<BaseResponse<string>> {
     return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/returnrequests/approve`, dto);
+  }
+
+  finishReturnRequest(dto: ReturnRequestFinishDto): Observable<BaseResponse<string>> {
+    return this.http.post<BaseResponse<string>>(`${environment.backendUrl}/api/returnrequests/finish`, dto);
   }
 
   rejectReturnRequest(dto: ReturnRequestRejectDto): Observable<BaseResponse<string>> {

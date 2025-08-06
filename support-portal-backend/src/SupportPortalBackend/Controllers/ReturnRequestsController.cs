@@ -57,5 +57,27 @@ namespace SupportPortalBackend.Controllers
                 return response;
             }
         }
+
+        [HttpPost]
+        [Route("finish")]
+        public async Task<BaseResponse<string>> FinishReturnRequestAsync([FromBody] ReturnRequestFinishDto dto)
+        {
+            BaseResponse<string> response = new BaseResponse<string>();
+            try
+            {
+                await orderService.FinishReturnRequestAsync(dto);
+                response.Data = "Success";
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = ResponseStatus.Error;
+                response.Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                response.Data = null;
+                response.AdditionalInfo = ex.StackTrace;
+                return response;
+            }
+        }
     }
 }

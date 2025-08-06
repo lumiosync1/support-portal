@@ -7,31 +7,32 @@ import { ToastService } from 'src/app/modules/shared/services/toast.service';
 import { LoadingService } from 'src/app/modules/shared/services/loading.service';
 import { ResponseStatus } from 'src/app/modules/shared/models/base-response.model';
 import { OrderService } from '../../order.service';
-import { ReturnRequestApproveDto } from '../../_models/ReturnRequestApproveDto';
+import { ReturnRequestFinishDto } from '../../_models/ReturnRequestFinishDto';
 
 @Component({
-  selector: 'app-return-request-approve',
+  selector: 'app-return-request-finish',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf],
-  templateUrl: './return-request-approve.component.html',
-  styleUrl: './return-request-approve.component.scss'
+  templateUrl: './return-request-finish.component.html',
+  styleUrl: './return-request-finish.component.scss'
 })
-export class ReturnRequestApproveComponent {
-  fb = inject(FormBuilder);
+export class ReturnRequestFinishComponent {
+fb = inject(FormBuilder);
   activeModal = inject(NgbActiveModal);
   orderService = inject(OrderService);
   toast = inject(ToastService);
   spinner = inject(LoadingService);  
-  @Input() orderId: number;
+  @Input() order: any;
 
   subscriptions: Subscription[] = [];
   formGroup: FormGroup;
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
-      order_id: [this.orderId, Validators.required],
-      note: [''],
-      return_label_url: ['', Validators.required],
+      order_id: [this.order.order_id, Validators.required],
+      note: [this.order.note],
+      refund_order_price: [false, Validators.required],
+      refund_processing_fee: [false, Validators.required],
     });
   }
 
@@ -40,10 +41,10 @@ export class ReturnRequestApproveComponent {
       return;
     }
 
-    const dto: ReturnRequestApproveDto = Object.assign({}, this.formGroup.value);
+    const dto: ReturnRequestFinishDto = Object.assign({}, this.formGroup.value);
 
     this.spinner.showLoading();
-    const sub = this.orderService.approveReturnRequest(dto)
+    const sub = this.orderService.finishReturnRequest(dto)
     .pipe(finalize(() => this.spinner.hideLoading()))
     .subscribe(response => {
       if (response.Status !== ResponseStatus.Success) {
@@ -51,7 +52,7 @@ export class ReturnRequestApproveComponent {
         return;
       }
 
-      this.toast.showSuccess('Return request approved successfully');
+      this.toast.showSuccess('Return request finished successfully');
       this.activeModal.close(true);
     });
 

@@ -37,6 +37,11 @@
                                         <i class="bi bi-x fs-1"></i>
                                     </button>
                                 }
+                                @if(data.status == 'approved') {
+                                    <button class="btn btn-light-success btn-icon me-2" title="Finish" (click)="showFinishModal(data)">
+                                        <i class="bi bi-send fs-1"></i>
+                                    </button>
+                                }
                             </ng-template>
                         </e-column>
                     </e-columns>

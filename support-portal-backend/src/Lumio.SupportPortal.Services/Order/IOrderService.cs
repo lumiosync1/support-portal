@@ -32,6 +32,8 @@ namespace Lumio.SupportPortal.Services.Order
 
         public Task ApproveReturnRequestAsync(ReturnRequestApproveDto dto);
 
+        public Task FinishReturnRequestAsync(ReturnRequestFinishDto dto);
+
         public Task RejectReturnRequestAsync(ReturnRequestRejectDto dto);
     }
 }

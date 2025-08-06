@@ -8,6 +8,7 @@ import { AuthService } from '../../auth';
 import { PageInfoService } from 'src/app/_metronic/layout';
 import { ReturnRequestRejectComponent } from '../_components/return-request-reject/return-request-reject.component';
 import { ReturnRequestApproveComponent } from '../_components/return-request-approve/return-request-approve.component';
+import { ReturnRequestFinishComponent } from '../_components/return-request-finish/return-request-finish.component';
 
 @Component({
   selector: 'app-return-request-list',
@@ -60,6 +61,24 @@ private page = inject(PageInfoService);
     });
     modalRef.componentInstance.orderId = orderId;
 
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.grid.refresh();
+        }
+      },
+      () => {}
+    );
+  }
+
+  showFinishModal(order: any) {
+    const modalRef = this.modalService.open(ReturnRequestFinishComponent, {
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false
+    });
+    modalRef.componentInstance.order = order;
+    
     modalRef.result.then(
       (result) => {
         if (result) {

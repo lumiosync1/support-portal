@@ -495,6 +495,30 @@ namespace Lumio.SupportPortal.Services.Order
             request.reviewed_at = DateTime.UtcNow;
             dbContext.om_return_requests.Update(request);
             
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task FinishReturnRequestAsync(ReturnRequestFinishDto dto)
+        {
+            var request = await dbContext.om_return_requests
+                .Where(c => c.order_id == dto.order_id)
+                .FirstOrDefaultAsync();
+            if (request == null)
+            {
+                throw new Exception("Return request not found");
+            }
+            if (request.status != "approved")
+            {
+                throw new Exception("Return request can only be finished if it is approved");
+            }
+
+            // change request status
+            request.status = "returned";
+            request.note = dto.note;
+            request.reviewed_by = authService.CurrentUser.UserName;
+            request.reviewed_at = DateTime.UtcNow;
+            dbContext.om_return_requests.Update(request);
+
             // change order status
             var order = await dbContext.om_orders
                 .Where(o => o.order_id == dto.order_id)
@@ -539,6 +563,20 @@ namespace Lumio.SupportPortal.Services.Order
                     created_by = authService.CurrentUser.UserName,
                     note = "Refund processing fee of returned order"
                 });
+
+                if(purchase.order_fee != 0)
+                {
+                    await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                    {
+                        seller_id = request.seller_id,
+                        order_id = request.order_id,
+                        amount = Math.Abs(purchase.order_fee),
+                        debit = false,
+                        tx_code = BalanceTransactionCodes.ORDER_FEE,
+                        created_by = authService.CurrentUser.UserName,
+                        note = "Refund order fee of returned order"
+                    });
+                }
             }
         }
 

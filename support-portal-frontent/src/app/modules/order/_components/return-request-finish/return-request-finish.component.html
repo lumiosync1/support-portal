@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" >Approve Return Request #{{orderId}}</h4>
+    <h4 class="modal-title" >Finish Return Request #{{order.order_id}}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
@@ -11,21 +11,33 @@
                 This action will:
             </p>
             <ul>
-                <li>Change the status of the return request to <strong>Approved</strong></li>
+                <li>Change the status of the return request to <strong>Returned</strong></li>
+                <li>Change the status of the order to <strong>Returned</strong></li>
+                <li>Select checkboxes below if you want to refund order price and processing fee</li>
             </ul>
-            <strong>Are you sure you want to approve this return request?</strong>
+            <strong>Are you sure you want to finish this return request?</strong>
         </div>
     </div>
     
     <form class="form" [formGroup]="formGroup" *ngIf="formGroup">
         <div class="row mb-4">
             <div class="col-12">
-                <label for="txtReturnLabelUrl" class="form-label required">Return Label URL</label>
-                <input type="text" id="txtReturnLabelUrl" name="return_label_url" class="form-control"
-                    [class.is-valid]="formGroup.controls['return_label_url'].valid && (formGroup.controls['return_label_url'].dirty || formGroup.controls['return_label_url'].touched)"
-                    [class.is-invalid]="formGroup.controls['return_label_url'].invalid && (formGroup.controls['return_label_url'].dirty || formGroup.controls['return_label_url'].touched)"
-                    formControlName="return_label_url"/>
-                <div *ngIf="formGroup.controls['return_label_url'].hasError('required')" class="invalid-feedback">This field is required</div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbRefundOrderPrice" formControlName="refund_order_price" />
+                    <label class="form-check-label" for="chbRefundOrderPrice">
+                        Refund Order Price
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbRefundProcessingFee" formControlName="refund_processing_fee" />
+                    <label class="form-check-label" for="chbRefundProcessingFee">
+                        Refund Processing Fee (and Order Fee)
+                    </label>
+                </div>
             </div>
         </div>
         <div class="row mb-4">
@@ -43,6 +55,6 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
     <button class="btn btn-success" [disabled]="!formGroup || !formGroup.valid" (click)="onSubmit()">
-        <i class="bi bi-check-circle fs-3"></i> Approve
+        <i class="bi bi-send fs-3"></i> Finish
     </button>
 </div>
