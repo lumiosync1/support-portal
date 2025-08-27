@@ -408,18 +408,11 @@ namespace Lumio.SupportPortal.Services.Order
             // change order status
             var order = await dbContext.om_orders
                 .Where(o => o.order_id == dto.order_id)
+                .Include(o => o.purchase)
                 .FirstOrDefaultAsync();
-            order.order_status = OrderStatus.Cancelled;
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Cancelled, dto.note, authService.CurrentUser.UserName);
 
-            await dbContext.SaveChangesAsync();
-
-            om_order_purchase purchase = null;
-            if(dto.refund_order_price || dto.refund_processing_fee)
-            {
-                purchase = await dbContext.om_order_purchases
-                    .Where(o => o.order_id == dto.order_id)
-                    .FirstAsync();
-            }
+            om_order_purchase purchase = order.purchase;
 
             // refund order price
             if (dto.refund_order_price)
@@ -449,6 +442,20 @@ namespace Lumio.SupportPortal.Services.Order
                     created_by = authService.CurrentUser.UserName,
                     note = "Refund processing fee of cancelled order"
                 });
+
+                if (order.purchase.order_fee != 0)
+                {
+                    await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
+                    {
+                        seller_id = request.seller_id,
+                        order_id = request.order_id,
+                        amount = Math.Abs(order.purchase.order_fee),
+                        debit = false,
+                        tx_code = BalanceTransactionCodes.ORDER_FEE,
+                        created_by = authService.CurrentUser.UserName,
+                        note = "Refund order fee of returned order"
+                    });
+                }
             }
         }
 
@@ -522,18 +529,9 @@ namespace Lumio.SupportPortal.Services.Order
             // change order status
             var order = await dbContext.om_orders
                 .Where(o => o.order_id == dto.order_id)
+                .Include(o => o.purchase)
                 .FirstOrDefaultAsync();
-            order.order_status = OrderStatus.Returned;
-
-            await dbContext.SaveChangesAsync();
-
-            om_order_purchase purchase = null;
-            if (dto.refund_order_price || dto.refund_processing_fee)
-            {
-                purchase = await dbContext.om_order_purchases
-                    .Where(o => o.order_id == dto.order_id)
-                    .FirstAsync();
-            }
+            await orderManager.UpdateStatusAsync(order, OrderStatus.Returned, dto.note, authService.CurrentUser.UserName);
 
             // refund order price
             if (dto.refund_order_price)
@@ -542,7 +540,7 @@ namespace Lumio.SupportPortal.Services.Order
                 {
                     seller_id = request.seller_id,
                     order_id = request.order_id,
-                    amount = Math.Abs(purchase.supplier_total_price),
+                    amount = Math.Abs(order.purchase.supplier_total_price),
                     debit = false,
                     tx_code = BalanceTransactionCodes.PURCHASE,
                     created_by = authService.CurrentUser.UserName,
@@ -557,20 +555,20 @@ namespace Lumio.SupportPortal.Services.Order
                 {
                     seller_id = request.seller_id,
                     order_id = request.order_id,
-                    amount = Math.Abs(purchase.processing_fee),
+                    amount = Math.Abs(order.purchase.processing_fee),
                     debit = false,
                     tx_code = BalanceTransactionCodes.PROCESSING_FEE,
                     created_by = authService.CurrentUser.UserName,
                     note = "Refund processing fee of returned order"
                 });
 
-                if(purchase.order_fee != 0)
+                if(order.purchase.order_fee != 0)
                 {
                     await balanceManager.CreateTransactionAsync(new BalanceTransactionCreateDto
                     {
                         seller_id = request.seller_id,
                         order_id = request.order_id,
-                        amount = Math.Abs(purchase.order_fee),
+                        amount = Math.Abs(order.purchase.order_fee),
                         debit = false,
                         tx_code = BalanceTransactionCodes.ORDER_FEE,
                         created_by = authService.CurrentUser.UserName,
