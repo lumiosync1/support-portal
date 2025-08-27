@@ -7,8 +7,9 @@
             <ejs-grid #grid [dataSource]='data'
                 allowPaging='true' [pageSettings]='{ pageSize: 20, pageSizes: [10, 20, 30] }' 
                 [allowSorting]='true' [sortSettings]="{ columns: [{ field: 'order_id', direction: 'Descending' }] }"
-                [allowFiltering]='false' 
+                [allowFiltering]='true' 
                 allowTextWrap='true'
+                [filterSettings]="{ type: 'Menu' }"
                 >
                     <e-columns>
                         <e-column field='order_id' headerText='Order ID' textAlign='Right' width="100"></e-column>
