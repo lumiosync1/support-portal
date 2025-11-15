@@ -18,11 +18,13 @@ namespace SupportPortalBackend.Controllers
         BalanceManager balanceManager;
         ISellerService sellerService;
         IAuthService authService;
-        public SellersController(BalanceManager balanceManager, ISellerService sellerService, IAuthService authService)
+        IConfiguration configuration;
+        public SellersController(BalanceManager balanceManager, ISellerService sellerService, IAuthService authService, IConfiguration configuration)
         {
             this.balanceManager = balanceManager;
             this.sellerService = sellerService;
             this.authService = authService;
+            this.configuration = configuration;
         }
 
         [Route("{sellerId}")]
@@ -122,6 +124,24 @@ namespace SupportPortalBackend.Controllers
                 await sellerService.TopupAsync(dto);
                 response.Data = "Success";
                 response.Status = ResponseStatus.Success;
+
+                // unlock seller in order purchasing queue
+                try
+                {
+                    SellerDto seller = await sellerService.GetSellerAsync(dto.seller_id);
+
+                    string orderQueueUrl = configuration.GetValue<string>("OrderPurchasingQueueUrl") ?? "";
+                    string url = $"{orderQueueUrl}/queue/resume-seller";
+                    MultipartFormDataContent form = new MultipartFormDataContent();
+                    form.Add(new StringContent(seller.seller_name), "sellerName");
+                    using HttpClient httpClient = new HttpClient();
+                    await httpClient.PostAsync(url, form);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
                 return response;
             }
             catch (Exception ex)
