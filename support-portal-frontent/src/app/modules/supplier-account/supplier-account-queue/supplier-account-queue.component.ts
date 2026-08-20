@@ -61,11 +61,11 @@ export class SupplierAccountQueueComponent {
           account.orders[j] = new Date(order);
         }
 
-        account.orders_1h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 1 * 60 * 60 * 1000));
-        account.orders_2h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 2 * 60 * 60 * 1000));
-        account.orders_4h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 4 * 60 * 60 * 1000));
-        account.orders_12h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 12 * 60 * 60 * 1000));
-        account.orders_24h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 24 * 60 * 60 * 1000));
+        account.orders_1h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 1 * 60 * 60 * 1000)).sort((a: Date, b: Date) => b.getTime() - a.getTime());
+        account.orders_2h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 2 * 60 * 60 * 1000)).sort((a: Date, b: Date) => b.getTime() - a.getTime());
+        account.orders_4h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 4 * 60 * 60 * 1000)).sort((a: Date, b: Date) => b.getTime() - a.getTime());
+        account.orders_12h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 12 * 60 * 60 * 1000)).sort((a: Date, b: Date) => b.getTime() - a.getTime());
+        account.orders_24h = account.orders.filter((o: Date) => o >= new Date(Date.now() - 24 * 60 * 60 * 1000)).sort((a: Date, b: Date) => b.getTime() - a.getTime());
 
         account.limit1h = account.protection_settings.MaxOrders1Hour && account.orders_1h.length >= account.protection_settings.MaxOrders1Hour;
         account.limit2h = account.protection_settings.MaxOrders2Hour && account.orders_2h.length >= account.protection_settings.MaxOrders2Hour;
