@@ -17,7 +17,8 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
                 site = account.site,
                 allow_purchase = account.allow_purchase,
                 enabled = account.enabled,
-                note = account.note
+                note = account.note,
+                seller_name = account.seller_name
             };
         }
     }

@@ -60,6 +60,8 @@ export class SupplierAccountUpdateComponent {
         return;
       }
 
+      this.initData = res.Data;
+
       const setttings = JSON.parse(res.Data.SupplierAccount.protection_settings??'{"MaxOrders1Hour": 0, "MaxOrders24Hour": 0}');
       this.account = {
         account_id: res.Data.SupplierAccount.account_id,
@@ -76,6 +78,7 @@ export class SupplierAccountUpdateComponent {
         max_orders_4h: setttings.MaxOrders4Hour,
         max_orders_12h: setttings.MaxOrders12Hour,
         max_orders_24h: setttings.MaxOrders24Hour,
+        seller_name: res.Data.SupplierAccount.seller_name,
       };
 
       this.createForm();
@@ -98,6 +101,7 @@ export class SupplierAccountUpdateComponent {
       allow_purchase: [this.account.allow_purchase, [Validators.required]],
       enabled: [this.account.enabled, [Validators.required]],
       note: [this.account.note],
+      seller_name: [this.account.seller_name],
     })
   }
 
@@ -126,6 +130,7 @@ export class SupplierAccountUpdateComponent {
       enabled: formValue.enabled,
       note: formValue.note,
       account_id: this.id,
+      seller_name: formValue.seller_name
     };
 
     this.loadingService.showLoading();

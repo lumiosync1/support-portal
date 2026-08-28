@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { PageInfoService } from 'src/app/_metronic/layout';
 import { ToastService } from '../../shared/services/toast.service';
 import { SupplierAccountAddDto } from '../_models/SupplierAccountAddDto';
+import { SupplierAccountUpdateInitDataDto } from '../_models/SupplierAccountUpdateInitDataDto';
 import { Router } from '@angular/router';
 import { SupplierAccountService } from '../supplier-account.service';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -29,15 +30,34 @@ export class SupplierAccountAddComponent {
   private supplierAccountService = inject(SupplierAccountService);
   private loadingService = inject(LoadingService);
 
+  initData: SupplierAccountUpdateInitDataDto;
   formGroup: FormGroup;
 
   ngOnInit(): void {
     this.page.updateTitle('Add Supplier Account');
-    this.createForm();
+    this.loadInitData();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  loadInitData() {
+    this.loadingService.showLoading();
+    const sub = this.supplierAccountService.initDataAdd()
+    .pipe(
+      finalize(() => this.loadingService.hideLoading())
+    )
+    .subscribe(res => {
+      if(res.Status != ResponseStatus.Success) {
+        this.toast.showError(res.Message);
+        return;
+      }
+
+      this.initData = res.Data;
+      this.createForm();
+    });
+    this.subscriptions.push(sub);
   }
 
   createForm() {
@@ -49,6 +69,7 @@ export class SupplierAccountAddComponent {
       site: ['', [Validators.required]],
       max_orders_1h: [null, [Validators.required]],
       max_orders_24h: [null, [Validators.required]],
+      seller_name: [null],
     })
   }
 
@@ -69,7 +90,8 @@ export class SupplierAccountAddComponent {
       protection_settings: JSON.stringify({
         MaxOrders1Hour: formValue.max_orders_1h,
         MaxOrders24Hour: formValue.max_orders_24h
-      })
+      }),
+      seller_name: formValue.seller_name
     };
     this.loadingService.showLoading();
     const sub = this.supplierAccountService.create(dto)

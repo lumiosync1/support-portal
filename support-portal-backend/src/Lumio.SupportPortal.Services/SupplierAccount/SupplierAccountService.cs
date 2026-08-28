@@ -21,6 +21,20 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
             return dbContext.supplier_accounts;
         }
 
+        public async Task<SupplierAccountUpdateInitDataDto> InitDataAddAsync()
+        {
+            var sellers = await dbContext.sellers.Where(s => s.active)
+                                .Select(s => s.seller_name)
+                                .OrderBy(s => s)
+                                .ToListAsync();
+
+            var dto = new SupplierAccountUpdateInitDataDto()
+            {
+                Sellers = sellers
+            };
+            return dto;
+        }
+
         public async Task AddAsync(SupplierAccountAddDto dto)
         {
             var supplierAccount = new supplier_account
@@ -31,7 +45,7 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
                 ml_profile = $"f/075df555-8092-48c7-ae96-12457bfbeea6/p/{dto.ml_profile}",
                 protection_settings = dto.protection_settings,
                 site = dto.site,
-
+                seller_name = dto.seller_name,
                 allow_purchase = true, // Default value
                 enabled = true, // Default value
                 is_managed_account = true, // Default value
@@ -51,9 +65,15 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
                 throw new KeyNotFoundException($"Supplier account with ID {accountId} not found.");
             }
 
+            var sellers = await dbContext.sellers.Where(s => s.active)
+                                .Select(s => s.seller_name)
+                                .OrderBy(s => s)
+                                .ToListAsync();
+
             var dto = new SupplierAccountUpdateInitDataDto()
             {
                 SupplierAccount = SupplierAccountMapping.ToUpdateDto(account),
+                Sellers = sellers
             };
             return dto;
         }
@@ -75,6 +95,7 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
             account.allow_purchase = dto.allow_purchase;
             account.enabled = dto.enabled;
             account.note = dto.note;
+            account.seller_name = dto.seller_name;
 
             await dbContext.SaveChangesAsync();
         }

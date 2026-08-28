@@ -13,4 +13,5 @@ export interface SupplierAccountUpdateForm {
     max_orders_4h: number;
     max_orders_12h: number;
     max_orders_24h: number;
+    seller_name: string | null;
 }

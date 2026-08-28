@@ -5,4 +5,5 @@ export interface SupplierAccountAddDto {
     ml_profile: string | null;
     protection_settings: string | null;
     site: string;
+    seller_name: string | null;
 }
