@@ -13,5 +13,7 @@
         public string? protection_settings { get; set; }
 
         public string site { get; set; } = null!;
+
+        public string? seller_name { get; set; }
     }
 }

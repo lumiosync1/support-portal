@@ -3,5 +3,7 @@
     public class SupplierAccountUpdateInitDataDto
     {
         public SupplierAccountUpdateDto SupplierAccount { get; set; }
+
+        public List<string> Sellers { get; set; }
     }
 }
