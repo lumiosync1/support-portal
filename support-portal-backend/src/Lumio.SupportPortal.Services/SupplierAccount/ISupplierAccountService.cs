@@ -6,6 +6,8 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
     {
         public IQueryable<supplier_account> GetSupplierAccountQueryable();
 
+        public Task<SupplierAccountUpdateInitDataDto> InitDataAddAsync();
+
         public Task AddAsync(SupplierAccountAddDto dto);
 
         public Task<SupplierAccountUpdateInitDataDto> InitDataUpdateAsync(int accountId);

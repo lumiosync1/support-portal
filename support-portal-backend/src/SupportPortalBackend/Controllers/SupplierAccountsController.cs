@@ -17,6 +17,26 @@ namespace SupportPortalBackend.Controllers
             this.configuration = configuration;
         }
 
+        [HttpGet("init-data-add")]
+        public async Task<BaseResponse<SupplierAccountUpdateInitDataDto>> InitDataAddAsync()
+        {
+            BaseResponse<SupplierAccountUpdateInitDataDto> response = new BaseResponse<SupplierAccountUpdateInitDataDto>();
+            try
+            {
+                response.Data = await service.InitDataAddAsync();
+                response.Status = ResponseStatus.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = ResponseStatus.Error;
+                response.Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                response.Data = null;
+                response.AdditionalInfo = ex.StackTrace;
+                return response;
+            }
+        }
+
         [HttpPost]
         public async Task<BaseResponse<string>> AddSupplierAccountAsync(
             [FromBody] SupplierAccountAddDto dto)

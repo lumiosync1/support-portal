@@ -14,6 +14,10 @@ export class SupplierAccountService {
 
   constructor(private http: HttpClient) { }
 
+  initDataAdd(): Observable<BaseResponse<SupplierAccountUpdateInitDataDto>> {
+    return this.http.get<BaseResponse<SupplierAccountUpdateInitDataDto>>(`${environment.backendUrl}/api/SupplierAccounts/init-data-add`);
+  }
+
   initDataUpdate(account_id: number): Observable<BaseResponse<SupplierAccountUpdateInitDataDto>> {
     return this.http.get<BaseResponse<SupplierAccountUpdateInitDataDto>>(`${environment.backendUrl}/api/SupplierAccounts/${account_id}/init-data-update`);
   }

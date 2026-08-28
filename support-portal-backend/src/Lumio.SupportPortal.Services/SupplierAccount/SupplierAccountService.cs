@@ -21,6 +21,20 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
             return dbContext.supplier_accounts;
         }
 
+        public async Task<SupplierAccountUpdateInitDataDto> InitDataAddAsync()
+        {
+            var sellers = await dbContext.sellers.Where(s => s.active)
+                                .Select(s => s.seller_name)
+                                .OrderBy(s => s)
+                                .ToListAsync();
+
+            var dto = new SupplierAccountUpdateInitDataDto()
+            {
+                Sellers = sellers
+            };
+            return dto;
+        }
+
         public async Task AddAsync(SupplierAccountAddDto dto)
         {
             var supplierAccount = new supplier_account
