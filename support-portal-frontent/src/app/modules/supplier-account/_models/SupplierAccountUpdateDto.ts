@@ -9,4 +9,5 @@ export interface SupplierAccountUpdateDto {
     allow_purchase: boolean;
     enabled: boolean;
     note: string | null;
+    seller_name: string | null;
 }

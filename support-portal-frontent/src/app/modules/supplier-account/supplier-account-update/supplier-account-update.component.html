@@ -60,6 +60,19 @@
                         <div *ngIf="formGroup.controls['ml_profile'].hasError('required')" class="invalid-feedback">ML Profile ID is required</div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label class="form-label">Seller</label>
+                        <select formControlName="seller_name" class="form-select"
+                        [class.is-valid]="formGroup.controls['seller_name'].valid && (formGroup.controls['seller_name'].dirty || formGroup.controls['seller_name'].touched)"
+                        [class.is-invalid]="formGroup.controls['seller_name'].invalid && (formGroup.controls['seller_name'].dirty || formGroup.controls['seller_name'].touched)">
+                        <option value="">-- Select Seller --</option>
+                        @for(seller of initData?.Sellers; track seller) {
+                            <option [value]="seller">{{seller}}</option>
+                        }
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
