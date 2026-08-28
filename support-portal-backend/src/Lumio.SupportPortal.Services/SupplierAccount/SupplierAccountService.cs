@@ -75,6 +75,7 @@ namespace Lumio.SupportPortal.Services.SupplierAccount
             account.allow_purchase = dto.allow_purchase;
             account.enabled = dto.enabled;
             account.note = dto.note;
+            account.seller_name = dto.seller_name;
 
             await dbContext.SaveChangesAsync();
         }

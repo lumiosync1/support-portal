@@ -21,5 +21,7 @@
         public bool enabled { get; set; }
 
         public string? note { get; set; }
+
+        public string? seller_name { get; set; }
     }
 }
